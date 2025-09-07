@@ -41,6 +41,7 @@
   <!-- 指令 -->
   <script src="Script/module/command/getObjectProperty.js" defer></script>
   <script src="Script/module/command/requestURL.js" defer></script>
+  <script src="Script/module/command/downloadFile.js" defer></script>
   <!-- 模块 -->
   <script src="Script/module/_editdata.js" defer></script>
   <script src="Script/module/_resource.js" defer></script>
@@ -2483,7 +2484,8 @@
             id="config-localization-default"></select-box>
           <text id="config-other-summary" class="project-summary">Other Options</text>
           <text class="project-label">Preload Files</text><select-box id="config-preload"></select-box>
-          <text class="project-label">dead Zone</text><number-box id="config-deadzone" min="0" max="1" step="0.01" decimals="4"></number-box>
+          <text class="project-label">dead Zone</text><number-box id="config-deadzone" min="0" max="1" step="0.01"
+            decimals="4"></number-box>
         </box>
       </box>
       <button id="project-confirm" name="confirm">Confirm</button>
@@ -6124,6 +6126,25 @@
       </grid-box>
       <button id="request-keyValue-confirm" name="confirm">Confirm</button>
       <button id="request-keyValue-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+
+  <!-- 下载文件 -->
+  <window-frame id="downloadFile">
+    <title-bar>downloadFile<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>URL</text><string-var id="downloadFile-url"></string-var>
+        <text>Header</text><param-list id="downloadFile-header"></param-list>
+        <text>Method</text><select-box id="downloadFile-method"></select-box>
+        <text>Data</text><param-list id="downloadFile-data"></param-list>
+        <text>CallBack</text><custom-box id="downloadFile-callback" type="file" filter="event"></custom-box>
+        <text>RateCallBack</text><custom-box id="downloadFile-rateCallback" type="file" filter="event"></custom-box>
+        <text>IsBackground</text><check-box class="standard" id="downloadFile-isBackground"></check-box>
+        <text>Path</text><string-var id="downloadFile-isBackground-path"></string-var>
+      </grid-box>
+      <button id="downloadFile-confirm" name="confirm">Confirm</button>
+      <button id="downloadFile-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
 

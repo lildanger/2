@@ -608,6 +608,10 @@
 			{
 				"class": "network",
 				"value": "requestURL"
+			},
+			{
+				"class": "network",
+				"value": "downloadFile"
 			}
 		]
 	},

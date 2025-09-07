@@ -25,7 +25,7 @@ const RequestkeyValueBind = {
 	save() {
 		const read = getElementReader('request-keyValue')
 		const data = { key: read('key'), value: read('value') }
-		const headers = $('#requestURL-header').read()
+		const headers = this.target.read()
 		if (headers.some((item) => item.key === data.key)) {
 			// 覆盖重复的键值
 			headers.splice(
@@ -71,7 +71,7 @@ Command.cases.requestURL = {
 			{ color: 'network' },
 			{ text: Local.get('command.requestURL') },
 			{ text: ' , ' },
-			{ color: ' normal' },
+			{ color: 'normal' },
 			{
 				text:
 					typeof url === 'string'

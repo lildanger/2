@@ -13,7 +13,8 @@ const Net = new (class {
 		url,
 		outputPath,
 		onProgress,
-		onCancelToken
+		onCancelToken,
+		method = 'get'
 	}) {
 		const source = axios.CancelToken.source()
 
@@ -25,7 +26,7 @@ const Net = new (class {
 
 		try {
 			const response = await axios({
-				method: 'get',
+				method,
 				url,
 				responseType: 'blob',
 				cancelToken: source.token,
