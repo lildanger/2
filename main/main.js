@@ -161,88 +161,97 @@ ipcMain.handle('to-excel', async (event, { langs, list }) => {
 
 // from-excel
 ipcMain.handle('from-excel', async (event) => {
-	const window = getWindowFromEvent(event)
-	const { filePaths, canceled } = await dialog.showOpenDialog(window, {
-		title: '选择导入翻译文件',
-		filters: [{ name: 'Excel(翻译文件)', extensions: ['xlsx'] }],
-		properties: ['openFile']
-	})
+	try {
+		const window = getWindowFromEvent(event)
+		const { filePaths, canceled } = await dialog.showOpenDialog(window, {
+			title: '选择导入翻译文件',
+			filters: [{ name: 'Excel(翻译文件)', extensions: ['xlsx'] }],
+			properties: ['openFile']
+		})
 
-	if (canceled || !filePaths || filePaths.length === 0) return []
+		if (canceled || !filePaths || filePaths.length === 0) return []
 
-	const filePath = filePaths[0]
-	const workbook = new ExcelJS.Workbook()
-	await workbook.xlsx.readFile(filePath)
+		const filePath = filePaths[0]
+		const workbook = new ExcelJS.Workbook()
+		await workbook.xlsx.readFile(filePath)
 
-	const worksheet = workbook.getWorksheet('open-yami')
-	if (!worksheet) return []
+		const worksheet = workbook.getWorksheet('open-yami')
 
-	// 解析表头获取语言列
-	const headerRow = worksheet.getRow(1)
-	const headers = headerRow.values.slice(1) // 跳过第一个空值
-	const langColumns = headers.filter(
-		(header) => !['ID', 'Name', 'parentID', 'isDir'].includes(header)
-	)
-	// 构建数据结构
-	const dataMap = new Map()
-	const rootNodes = []
+		if (!worksheet) return []
 
-	// 从第二行开始遍历数据
-	for (let rowIndex = 2; rowIndex <= worksheet.rowCount; rowIndex++) {
-		const row = worksheet.getRow(rowIndex)
-		const isDir = row.getCell(headers.indexOf('isDir') + 1).value === 1
-		const rowData = isDir
-			? {
-					class: 'folder',
-					id: row.getCell(headers.indexOf('ID') + 1).value,
-					name: row.getCell(headers.indexOf('Name') + 1).value || '',
-					parentID: row.getCell(headers.indexOf('parentID') + 1)
-						.value,
-					expanded: false,
-					children: []
-				}
-			: {
-					id: row.getCell(headers.indexOf('ID') + 1).value,
-					name: row.getCell(headers.indexOf('Name') + 1).value,
-					parentID: row.getCell(headers.indexOf('parentID') + 1)
-						.value,
-					contents: {}
-				}
-		if (!isDir) {
-			// 收集多语言内容
-			langColumns.forEach((lang) => {
-				const cellValue = row.getCell(headers.indexOf(lang) + 1).value
-				rowData.contents[lang] = cellValue !== null ? cellValue : ''
-			})
-		}
+		// 解析表头获取语言列
+		const headerRow = worksheet.getRow(1)
+		const headers = headerRow.values.slice(1) // 跳过第一个空值
+		const langColumns = headers.filter(
+			(header) => !['ID', 'Name', 'parentID', 'isDir'].includes(header)
+		)
+		// 构建数据结构
+		const dataMap = new Map()
+		const rootNodes = []
 
-		let parent = dataMap.get(rowData.id)
-		if (parent && parent.class === 'folder') {
-			rowData.children = parent.children
-			dataMap.delete(rowData.id)
-		}
-		dataMap.set(rowData.id, rowData)
-
-		// 挂载到父节点或作为根节点
-		if (rowData.parentID) {
-			const parent = dataMap.get(rowData.parentID)
-			if (parent) {
-				parent.children = parent.children || []
-				parent.children.push(rowData)
-			} else {
-				dataMap.set(rowData.parentID, {
-					class: 'folder',
-					id: rowData.parentID,
-					name: '',
-					expanded: false,
-					children: [rowData]
+		// 从第二行开始遍历数据
+		for (let rowIndex = 2; rowIndex <= worksheet.rowCount; rowIndex++) {
+			const row = worksheet.getRow(rowIndex)
+			const isDir = row.getCell(headers.indexOf('isDir') + 1).value === 1
+			const rowData = isDir
+				? {
+						class: 'folder',
+						id: row.getCell(headers.indexOf('ID') + 1).value,
+						name:
+							row.getCell(headers.indexOf('Name') + 1).value ||
+							'',
+						parentID: row.getCell(headers.indexOf('parentID') + 1)
+							.value,
+						expanded: false,
+						children: []
+					}
+				: {
+						id: row.getCell(headers.indexOf('ID') + 1).value,
+						name: row.getCell(headers.indexOf('Name') + 1).value,
+						parentID: row.getCell(headers.indexOf('parentID') + 1)
+							.value,
+						contents: {}
+					}
+			if (!isDir) {
+				// 收集多语言内容
+				langColumns.forEach((lang) => {
+					const cellValue = row.getCell(
+						headers.indexOf(lang) + 1
+					).value
+					rowData.contents[lang] = cellValue !== null ? cellValue : ''
 				})
 			}
-		} else {
-			rootNodes.push(rowData)
+
+			let parent = dataMap.get(rowData.id)
+			if (parent && parent.class === 'folder') {
+				rowData.children = parent.children
+				dataMap.delete(rowData.id)
+			}
+			dataMap.set(rowData.id, rowData)
+
+			// 挂载到父节点或作为根节点
+			if (rowData.parentID) {
+				const parent = dataMap.get(rowData.parentID)
+				if (parent) {
+					parent.children = parent.children || []
+					parent.children.push(rowData)
+				} else {
+					dataMap.set(rowData.parentID, {
+						class: 'folder',
+						id: rowData.parentID,
+						name: '',
+						expanded: false,
+						children: [rowData]
+					})
+				}
+			} else {
+				rootNodes.push(rowData)
+			}
 		}
+		return rootNodes
+	} catch {
+		return []
 	}
-	return rootNodes
 })
 
 // ******************************** 文件系统 ********************************
