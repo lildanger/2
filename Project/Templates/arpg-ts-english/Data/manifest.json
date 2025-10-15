@@ -93,6 +93,8 @@
     {
       "path": "Assets/Skills/000 - Common Skills/000 - Jump.0db219ae914cc947.skill",
       "size": 5259
+      "path": "Assets/Skills/000 - Common Skills/000 - Jump.0db219ae914cc947.skill",
+      "size": 5259
     },
     {
       "path": "Assets/Skills/004 - Priest Skills/401 - Holy Word.b659a70fa284e0b8.skill",
@@ -151,6 +153,26 @@
       "size": 5314
     },
     {
+      "path": "Assets/Skills/003 - Mage Skills/300 - Fire Ball.2a39e76dfc12ee8e.skill",
+      "size": 1820
+    },
+    {
+      "path": "Assets/Skills/003 - Mage Skills/301 - Fire Wall.5f416f92ad1b255f.skill",
+      "size": 5708
+    },
+    {
+      "path": "Assets/Skills/003 - Mage Skills/302 - Cyclone.3277274337b1edcc.skill",
+      "size": 1998
+    },
+    {
+      "path": "Assets/Skills/003 - Mage Skills/303 - Black Hole.0de70bccb24c4caf.skill",
+      "size": 1843
+    },
+    {
+      "path": "Assets/Skills/003 - Mage Skills/304 - Ice Cone Emitter.d58e81968a540da8.skill",
+      "size": 2009
+    },
+    {
       "path": "Assets/Skills/001 - Warrior Skills/100 - Attack.6e210c214a2579bc.skill",
       "size": 27077
     },
@@ -173,6 +195,22 @@
     {
       "path": "Assets/Skills/001 - Warrior Skills/190 - Sword Mastery.2cc29b805058ff48.skill",
       "size": 548
+    },
+    {
+      "path": "Assets/Skills/005 - Monster Skills/900 - Attack.76af4e41772ddda8.skill",
+      "size": 3291
+    },
+    {
+      "path": "Assets/Skills/005 - Monster Skills/901 - Boss Attack.a9e5e36608fcf690.skill",
+      "size": 27013
+    },
+    {
+      "path": "Assets/Skills/005 - Monster Skills/902 - Frenzied Hammering.76004b325744d935.skill",
+      "size": 5041
+    },
+    {
+      "path": "Assets/Skills/005 - Monster Skills/903 - Spark.d72fc9543a60cfd8.skill",
+      "size": 3235
     },
     {
       "path": "Assets/Skills/005 - Monster Skills/900 - Attack.76af4e41772ddda8.skill",
@@ -265,6 +303,30 @@
       "size": 1883
     },
     {
+      "path": "Assets/Skills/003 - Mage Skills/300 - Fire Ball.1af1eb970a26b48d.trigger",
+      "size": 3186
+    },
+    {
+      "path": "Assets/Skills/003 - Mage Skills/301 - Fire Wall.cba97df05d81e684.trigger",
+      "size": 1828
+    },
+    {
+      "path": "Assets/Skills/003 - Mage Skills/302 - Cyclone.07d0a60546356cec.trigger",
+      "size": 2135
+    },
+    {
+      "path": "Assets/Skills/003 - Mage Skills/303 - Black Hole.8def51ebb5dd445b.trigger",
+      "size": 1292
+    },
+    {
+      "path": "Assets/Skills/003 - Mage Skills/304 - Ice Cone Emitter Cone.ceb8ab22092b4c9b.trigger",
+      "size": 2112
+    },
+    {
+      "path": "Assets/Skills/003 - Mage Skills/304 - Ice Cone Emitter.ea2d89a4762377f5.trigger",
+      "size": 5406
+    },
+    {
       "path": "Assets/Skills/001 - Warrior Skills/100 - Attack Combo 1.20a1c038cad62899.trigger",
       "size": 1761
     },
@@ -287,6 +349,26 @@
     {
       "path": "Assets/Skills/001 - Warrior Skills/104 - Flying Sword.4efeda2abdf78da0.trigger",
       "size": 2466
+    },
+    {
+      "path": "Assets/Skills/005 - Monster Skills/900 - Attack.41d1cf3c9500fc15.trigger",
+      "size": 1761
+    },
+    {
+      "path": "Assets/Skills/005 - Monster Skills/901 - Boss Attack Combo 1.1c05197a0eb30a34.trigger",
+      "size": 1757
+    },
+    {
+      "path": "Assets/Skills/005 - Monster Skills/901 - Boss Attack Combo 2.a8bfcd74b8978e3d.trigger",
+      "size": 1854
+    },
+    {
+      "path": "Assets/Skills/005 - Monster Skills/902 - Frenzied Hammering.6b25570c6fa7987d.trigger",
+      "size": 1851
+    },
+    {
+      "path": "Assets/Skills/005 - Monster Skills/903 - Spark.e0f650a8de8c8758.trigger",
+      "size": 3319
     },
     {
       "path": "Assets/Skills/005 - Monster Skills/900 - Attack.41d1cf3c9500fc15.trigger",
@@ -465,6 +547,10 @@
       "size": 1240
     },
     {
+      "path": "Assets/UI/Menu/Drag-and-drop - Mousemove.1ea42955cc47c5fe.event",
+      "size": 6989
+    },
+    {
       "path": "Assets/UI/Dialog Box/Show Choices.abc2b8975a8b64c0.event",
       "size": 6118
     },
@@ -551,6 +637,38 @@
     {
       "path": "Assets/UI/Menu/Switch Menu Interface.384b535e7f04b897.event",
       "size": 1163
+    },
+    {
+      "path": "Assets/UI/Trading/Open Trading Interface.116f445dbaae10c7.event",
+      "size": 3612
+    },
+    {
+      "path": "Assets/UI/UI Sound Effect/000.Play Confirm SE.3f935b3f2928576e.event",
+      "size": 313
+    },
+    {
+      "path": "Assets/UI/UI Sound Effect/001.Play Cancel SE.0cca865673a7b882.event",
+      "size": 312
+    },
+    {
+      "path": "Assets/UI/UI Sound Effect/002.Play Cursor SE.03bca125e5493562.event",
+      "size": 312
+    },
+    {
+      "path": "Assets/UI/UI Sound Effect/003.Play Error SE.72f936bbeba34aa4.event",
+      "size": 312
+    },
+    {
+      "path": "Assets/UI/UI Sound Effect/004.Play Equip SE.2b678792940af6a4.event",
+      "size": 312
+    },
+    {
+      "path": "Assets/UI/UI Sound Effect/005.Play Trade SE.2e509d2291b2d657.event",
+      "size": 312
+    },
+    {
+      "path": "Assets/UI/UI Sound Effect/006.Play Save SE.6589cd90904fd918.event",
+      "size": 312
     },
     {
       "path": "Assets/Plugins/Global Plugins/DropItem/DropItem_Get.552ccea726c420e0.event",
@@ -893,6 +1011,10 @@
       "size": 1241934
     },
     {
+      "path": "Assets/Skills/! Skill Icons.a76bcfc585129656.png",
+      "size": 1241934
+    },
+    {
       "path": "Assets/Dungeon Assets/Dungeon Weapons/dungeon_weapon_01.630f017794c40dc6.png",
       "size": 0
     },
@@ -1137,6 +1259,10 @@
       "size": 62002
     },
     {
+      "path": "Assets/Scenes/Tilesets/Overworld Tileset Grass.cd96420d15c76e4f.png",
+      "size": 62002
+    },
+    {
       "path": "Assets/UI/! Assets/Background_Active.010b7ecfbc5f5e76.png",
       "size": 0
     },
@@ -1231,188 +1357,242 @@
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-392.b84245a73aad8034.png",
       "size": 0
+      "path": "Assets/Particles/Basic/ding blood/dingbats-392.b84245a73aad8034.png",
+      "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-396.7c6ea1fd762f4661.png",
+      "size": 0
       "path": "Assets/Particles/Basic/ding blood/dingbats-396.7c6ea1fd762f4661.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-397.e81603c444c88fb5.png",
+      "path": "Assets/Particles/Basic/ding blood/dingbats-397.e81603c444c88fb5.png",
       "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-398.9bf92c6e3638c3d2.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-398.9bf92c6e3638c3d2.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-399.f2f70cbe5a44bb3d.png",
       "size": 0
+      "path": "Assets/Particles/Basic/ding blood/dingbats-399.f2f70cbe5a44bb3d.png",
+      "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-400.8caea4482345b9eb.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-400.8caea4482345b9eb.png",
       "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-401.fa5d60abeb934265.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-401.fa5d60abeb934265.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-402.fe5c5bdf713d46c9.png",
       "size": 0
+      "path": "Assets/Particles/Basic/ding blood/dingbats-402.fe5c5bdf713d46c9.png",
+      "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-403.c915788ca0cb2231.png",
       "size": 0
+      "path": "Assets/Particles/Basic/ding blood/dingbats-403.c915788ca0cb2231.png",
+      "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-404.008bb6d2b4545a28.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-404.008bb6d2b4545a28.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-405.622195add1de420f.png",
       "size": 0
+      "path": "Assets/Particles/Basic/ding blood/dingbats-405.622195add1de420f.png",
+      "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-406.5a5699d34372bf91.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-406.5a5699d34372bf91.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-407.9f49fb0cfb94cc4f.png",
+      "path": "Assets/Particles/Basic/ding blood/dingbats-407.9f49fb0cfb94cc4f.png",
       "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-408.c7e22f4663e5f4bf.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-408.c7e22f4663e5f4bf.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-409.a6f06c0515135da0.png",
+      "path": "Assets/Particles/Basic/ding blood/dingbats-409.a6f06c0515135da0.png",
       "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-410.4c2215ffe1f20971.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-410.4c2215ffe1f20971.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-411.dbc6ccec014b0676.png",
+      "path": "Assets/Particles/Basic/ding blood/dingbats-411.dbc6ccec014b0676.png",
       "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-412.e364e873035a99c2.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-412.e364e873035a99c2.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-413.979d5766c42bc593.png",
+      "path": "Assets/Particles/Basic/ding blood/dingbats-413.979d5766c42bc593.png",
       "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-414.780500573729b516.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-414.780500573729b516.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-415.e7934751675ac16f.png",
+      "path": "Assets/Particles/Basic/ding blood/dingbats-415.e7934751675ac16f.png",
       "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-416.a567804b07ff098b.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-416.a567804b07ff098b.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-417.1dedb57eec41bdec.png",
+      "path": "Assets/Particles/Basic/ding blood/dingbats-417.1dedb57eec41bdec.png",
       "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-418.0e6379ff09e41fd7.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-418.0e6379ff09e41fd7.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-419.9e43bf33e68c68e2.png",
+      "path": "Assets/Particles/Basic/ding blood/dingbats-419.9e43bf33e68c68e2.png",
       "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-420.54109c59823d3261.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-420.54109c59823d3261.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-421.8e95c8b136477e75.png",
+      "path": "Assets/Particles/Basic/ding blood/dingbats-421.8e95c8b136477e75.png",
       "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-422.b03362116846a5dc.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-422.b03362116846a5dc.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-423.d0bcf611292f9723.png",
+      "path": "Assets/Particles/Basic/ding blood/dingbats-423.d0bcf611292f9723.png",
       "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-424.e107563155bf933b.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-424.e107563155bf933b.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-425.a0fb8028b85dd69a.png",
+      "path": "Assets/Particles/Basic/ding blood/dingbats-425.a0fb8028b85dd69a.png",
       "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-426.d3307397db652b60.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-426.d3307397db652b60.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-427.f96691e22e99a019.png",
+      "path": "Assets/Particles/Basic/ding blood/dingbats-427.f96691e22e99a019.png",
       "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-428.6c2dab777de16e7e.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-428.6c2dab777de16e7e.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-429.98fba9123a4851be.png",
+      "path": "Assets/Particles/Basic/ding blood/dingbats-429.98fba9123a4851be.png",
       "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-430.789f5db4d4f5c92c.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-430.789f5db4d4f5c92c.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-431.74e30db1e7227c8e.png",
+      "path": "Assets/Particles/Basic/ding blood/dingbats-431.74e30db1e7227c8e.png",
       "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-432.7bebe9d08f215627.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-432.7bebe9d08f215627.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-433.7126df0bbc91b685.png",
+      "path": "Assets/Particles/Basic/ding blood/dingbats-433.7126df0bbc91b685.png",
       "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-434.54127d33e28dba14.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-434.54127d33e28dba14.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-435.e768c8a3a13c2749.png",
       "size": 0
+      "path": "Assets/Particles/Basic/ding blood/dingbats-435.e768c8a3a13c2749.png",
+      "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-436.ab21b1da24fd625d.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-436.ab21b1da24fd625d.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-437.fde26ce48a0e24a6.png",
+      "path": "Assets/Particles/Basic/ding blood/dingbats-437.fde26ce48a0e24a6.png",
       "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-438.3fe16c90062f9567.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-438.3fe16c90062f9567.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-439.9cd78b4ab9b1d646.png",
+      "path": "Assets/Particles/Basic/ding blood/dingbats-439.9cd78b4ab9b1d646.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Basic/ding blood/dingbats-440.01013a488b223267.png",
+      "path": "Assets/Particles/Basic/ding blood/dingbats-440.01013a488b223267.png",
       "size": 0
     },
     {
+      "path": "Assets/Particles/Basic/ding blood/dingbats-441.468c7b99abfcdacc.png",
       "path": "Assets/Particles/Basic/ding blood/dingbats-441.468c7b99abfcdacc.png",
       "size": 0
     },
@@ -3601,79 +3781,79 @@
       "size": 0
     },
     {
-      "path": "Assets/Particles/Complex/muzzle flash/muzzle_flash_1.2febc03847d0856c.png",
+      "path": "Assets/Particles/Color/star/color_star_91.2558297c7e3cf1cc.png",
       "size": 0
     },
     {
-      "path": "Assets/Particles/Complex/muzzle flash/muzzle_flash_10.cb4d914666f411d4.png",
+      "path": "Assets/Particles/Color/star/color_star_92.d381b511cc58aac3.png",
       "size": 0
     },
     {
-      "path": "Assets/Particles/Complex/muzzle flash/muzzle_flash_11.b80aa22b8f1a54a3.png",
+      "path": "Assets/Particles/Color/star/color_star_93.7ad2fecaa70d1223.png",
       "size": 0
     },
     {
-      "path": "Assets/Particles/Complex/muzzle flash/muzzle_flash_12.b7d313018865b561.png",
+      "path": "Assets/Particles/Color/star/color_star_95.5ac35ca3d7d304ac.png",
       "size": 0
     },
     {
-      "path": "Assets/Particles/Complex/muzzle flash/muzzle_flash_13.c275f9fb3e6490e8.png",
+      "path": "Assets/Particles/Color/star/color_star_96.2e728b46cf64606d.png",
       "size": 0
     },
     {
-      "path": "Assets/Particles/Complex/muzzle flash/muzzle_flash_14.635bf93ef7463b54.png",
+      "path": "Assets/Particles/Complex/circle/rounded_15.fbd5ba733937852c.png",
       "size": 0
     },
     {
-      "path": "Assets/Particles/Complex/muzzle flash/muzzle_flash_15.3432cb4055ed1f2d.png",
+      "path": "Assets/Particles/Complex/circle/rounded_16.5382fb2202ffb4d0.png",
       "size": 0
     },
     {
-      "path": "Assets/Particles/Complex/muzzle flash/muzzle_flash_16.ef97ef1cb0e11815.png",
+      "path": "Assets/Particles/Complex/circle/rounded_17.780ad852918773d6.png",
       "size": 0
     },
     {
-      "path": "Assets/Particles/Complex/muzzle flash/muzzle_flash_17.1b9b628969440584.png",
+      "path": "Assets/Particles/Complex/circle/rounded_18.204a3593a158fa21.png",
       "size": 0
     },
     {
-      "path": "Assets/Particles/Complex/muzzle flash/muzzle_flash_18.47b3106aabe7a50a.png",
-      "size": 149451
-    },
-    {
-      "path": "Assets/Particles/Complex/muzzle flash/muzzle_flash_19.cec386457504f820.png",
+      "path": "Assets/Particles/Complex/circle/rounded_19.e3841ac5c9089f17.png",
       "size": 0
     },
     {
-      "path": "Assets/Particles/Complex/muzzle flash/muzzle_flash_2.f635369bdf49d2b8.png",
+      "path": "Assets/Particles/Complex/circle/rounded_2.e09621945ccc5cea.png",
       "size": 0
     },
     {
-      "path": "Assets/Particles/Complex/muzzle flash/muzzle_flash_20.5358a8f4c958788a.png",
+      "path": "Assets/Particles/Complex/circle/rounded_20.90973e59e6366654.png",
       "size": 0
     },
     {
-      "path": "Assets/Particles/Complex/muzzle flash/muzzle_flash_3.6ed29de9a3504e09.png",
+      "path": "Assets/Particles/Complex/circle/rounded_21.d7fd4942e264a7a7.png",
       "size": 0
     },
     {
-      "path": "Assets/Particles/Complex/muzzle flash/muzzle_flash_4.92bf86be78803292.png",
-      "size": 48034
-    },
-    {
-      "path": "Assets/Particles/Complex/muzzle flash/muzzle_flash_5.59dedd678dedc959.png",
+      "path": "Assets/Particles/Complex/circle/rounded_24.72736e522a2dd3e9.png",
       "size": 0
     },
     {
-      "path": "Assets/Particles/Complex/muzzle flash/muzzle_flash_6.e07bec682aa43a8e.png",
-      "size": 71129
-    },
-    {
-      "path": "Assets/Particles/Complex/muzzle flash/muzzle_flash_7.4376af1353fd9874.png",
+      "path": "Assets/Particles/Complex/circle/rounded_25.ac713de8a6731040.png",
       "size": 0
     },
     {
-      "path": "Assets/Particles/Complex/muzzle flash/muzzle_flash_8.01772423cd75d73f.png",
+      "path": "Assets/Particles/Complex/circle/rounded_26.c63dbb98cc877159.png",
+      "size": 0
+    },
+    {
+      "path": "Assets/Particles/Complex/circle/rounded_27.fa6af3e190c5ad4c.png",
+      "size": 0
+    },
+    {
+      "path": "Assets/Particles/Complex/circle/rounded_28.e6dd2118c168b56e.png",
+      "size": 0
+    },
+    {
+      "path": "Assets/Particles/Complex/circle/rounded_29.482f7edf41855b91.png",
       "size": 0
     },
     {
@@ -3990,29 +4170,36 @@
     },
     {
       "path": "Assets/Particles/Complex/star/star_1.7d33a468784ff69e.png",
+      "path": "Assets/Particles/Complex/star/star_1.7d33a468784ff69e.png",
       "size": 0
     },
     {
+      "path": "Assets/Particles/Complex/star/star_10.2f9aa455fb8fcd58.png",
       "path": "Assets/Particles/Complex/star/star_10.2f9aa455fb8fcd58.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Complex/star/star_2.86f934a58593bbf1.png",
+      "path": "Assets/Particles/Complex/star/star_2.86f934a58593bbf1.png",
       "size": 0
     },
     {
+      "path": "Assets/Particles/Complex/star/star_3.5f11c2b877e95b5a.png",
       "path": "Assets/Particles/Complex/star/star_3.5f11c2b877e95b5a.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Complex/star/star_4.b1f805324f932913.png",
+      "path": "Assets/Particles/Complex/star/star_4.b1f805324f932913.png",
       "size": 0
     },
     {
       "path": "Assets/Particles/Complex/star/star_5.72a66b1979201e88.png",
+      "path": "Assets/Particles/Complex/star/star_5.72a66b1979201e88.png",
       "size": 0
     },
     {
+      "path": "Assets/Particles/Complex/star/star_6.504e9ab72f81cc0d.png",
       "path": "Assets/Particles/Complex/star/star_6.504e9ab72f81cc0d.png",
       "size": 0
     },
@@ -4757,20 +4944,20 @@
       "size": 15390
     },
     {
-      "path": "Assets/Plugins/Global Plugins/HealthBar/HealthBar_Background.92144fc3fc32fdbf.png",
-      "size": 15559
+      "path": "Assets/Particles/Complex/smoke/smoke_9.7caa7c699d338d84.png",
+      "size": 0
     },
     {
-      "path": "Assets/Plugins/Global Plugins/HealthBar/HealthBar_Enemy.2b481ebc2d529fe4.png",
-      "size": 15694
+      "path": "Assets/Particles/Square.40808ded4500d288.png",
+      "size": 15390
     },
     {
-      "path": "Assets/Plugins/Global Plugins/HealthBar/HealthBar_Friendly.7c621804d5559957.png",
-      "size": 15680
+      "path": "Assets/Scenes/Parallaxes/Starry Space Parallaxes/Starry Space 1.b7ff6a0840772580.png",
+      "size": 1360
     },
     {
-      "path": "Assets/Plugins/Global Plugins/HealthBar/HealthBar_Special.1eb77a9949439cd9.png",
-      "size": 15843
+      "path": "Assets/Scenes/Parallaxes/Starry Space Parallaxes/Starry Space 2.9ef5493da4152180.png",
+      "size": 1031
     },
     {
       "path": "Assets/Plugins/Global Plugins/DropItem/DropItem_Glow.0fcd4a92ddf48a12.png",
@@ -4799,6 +4986,10 @@
     {
       "path": "Assets/Skills/003 - Mage Skills/Skill Anims/Sprite - Fire Ball.16607ed2e8dccbb8.png",
       "size": 8753
+    },
+    {
+      "path": "Assets/Skills/001 - Warrior Skills/Skill Anims/Sprite - Sword.924099c18893664d.png",
+      "size": 19512
     },
     {
       "path": "Assets/Skills/001 - Warrior Skills/Skill Anims/Sprite - Sword.924099c18893664d.png",
@@ -5568,17 +5759,21 @@
     },
     {
       "path": "Assets/Audio/Sound/S01L SoundPack/Glass/glass_hit_01.d911971e4ebea561.wav",
+      "path": "Assets/Audio/Sound/S01L SoundPack/Glass/glass_hit_01.d911971e4ebea561.wav",
       "size": 0
     },
     {
+      "path": "Assets/Audio/Sound/S01L SoundPack/Glass/glass_hit_02.419857ac1fd06221.wav",
       "path": "Assets/Audio/Sound/S01L SoundPack/Glass/glass_hit_02.419857ac1fd06221.wav",
       "size": 0
     },
     {
       "path": "Assets/Audio/Sound/S01L SoundPack/Glass/glass_hit_03.5848040c09005756.wav",
+      "path": "Assets/Audio/Sound/S01L SoundPack/Glass/glass_hit_03.5848040c09005756.wav",
       "size": 0
     },
     {
+      "path": "Assets/Audio/Sound/S01L SoundPack/Glass/glass_hit_04.e733bd2bef383a02.wav",
       "path": "Assets/Audio/Sound/S01L SoundPack/Glass/glass_hit_04.e733bd2bef383a02.wav",
       "size": 0
     },
@@ -7531,6 +7726,10 @@
     {
       "path": "Assets/Audio/Music/Yet another free music pack/! cc by 4.0 license.0355289dee978f3b.txt",
       "size": 111
+    },
+    {
+      "path": "Assets/Audio/Sound/S01L SoundPack/! cc0 license.d53c18c6b2042449.txt",
+      "size": 38
     },
     {
       "path": "Assets/Audio/Sound/Fantasy Sound Pack/! cc by 4.0 license.014dfe08464a869e.txt",
