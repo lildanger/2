@@ -1,7 +1,7 @@
 {
-	"arpg-ts-chinese": "1.0.4",
-	"arpg-ts-english": "1.0.4",
-	"arpg-ts-update": "1.0.0",
+	"arpg-ts-chinese": "1.0.5",
+	"arpg-ts-english": "1.0.5",
+	"arpg-ts-update": "1.0.1",
 	"electron-mac-universal.app": "1.0.0",
 	"electron-win-x64": "1.0.0",
 	"script": "1.0.0",
