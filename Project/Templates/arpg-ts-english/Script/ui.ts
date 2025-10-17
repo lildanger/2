@@ -210,7 +210,7 @@ let UI = new class UIManager {
   }
 
   /**
-   * 创建预设元素的实例，并添加到跟元素
+   * 创建预设元素的实例，并添加到根元素
    * @param presetId 预设元素ID
    * @returns 创建的元素实例
    */
@@ -283,7 +283,7 @@ let UI = new class UIManager {
     }
   }
 
-  /** 移除最新的焦点 */
+  /** 移除最新的指针事件根元素 */
   public removeLatestPointerEventRoot(): void {
     const roots = this.pointerEventRoots
     this.removePointerEventRoot(roots[roots.length - 1])
@@ -1306,7 +1306,7 @@ class UIElement {
 
   /**
    * 将元素移动到父级列表中指定的索引位置
-   * @param pos 目标索引位置
+   * @param pos 目标索引位置(负数表示倒数第几个)
    */
   public moveToIndex(pos: number): void {
     const {parent} = this
@@ -2296,7 +2296,6 @@ class TextElement extends UIElement {
   public get verticalAlign(): VerticalAlignment {
     return this._verticalAlign
   }
-  // 写入垂直对齐
   public set verticalAlign(value: VerticalAlignment) {
     if (this._verticalAlign !== value) {
       switch (value) {

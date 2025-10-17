@@ -65,35 +65,35 @@ class CommandFunctionList extends Array<CommandFunction> {
 
 /** ******************************** 指令编译器 ******************************** */
 
-let Command = new (class CommandCompiler {
-	/** 编译时指令栈 */
-	private stack: CompileTimeCommandStack = new CompileTimeCommandStack();
-	/** 编译时标签上下文集合 */
-	private labels: HashMap<compileTimeLabelContext> = Object.empty;
-	/** 编译时跳转上下文集合 */
-	private jumps: Array<compileTimeJumpContext> = Array.empty;
-	/** 编译时返回上下文集合 */
-	private returns: Array<compileTimeReturnContext> = Array.empty;
-	/** 自定义指令脚本映射表 */
-	private scriptMap: HashMap<any> = {};
-	/** 参数正则表达式映射表 */
-	private paramRegExpMap: HashMap<RegExp> = {};
-	/** 参数字符串 */
-	public parameters: string = "";
-	/** 显示文本指令内容 */
-	public textContent: string = "";
-	/** 显示选项进入分支 */
-	public choiceIndex: number = -1;
-	/** 显示选项内容列表 */
-	public choiceContents: Array<string> = [];
-	/** 返回值的键 */
-	public returnKey: symbol = Symbol("RETURN_VALUE");
-	/** 继承事件指令列表的键 */
-	public inheritKey = Symbol("INHERITED_COMMANDS");
-	/** 异步指令块事件列表的键 */
-	public asyncKey = Symbol("ASYNC_COMMANDS");
-	/** 自定义指令脚本管理器 */
-	public custom!: ScriptManager;
+let Command = new class CommandCompiler {
+  /** 编译时指令栈 */
+  private stack: CompileTimeCommandStack = new CompileTimeCommandStack()
+  /** 编译时标签上下文集合 */
+  private labels: HashMap<compileTimeLabelContext> = Object.empty
+  /** 编译时跳转上下文集合 */
+  private jumps: Array<compileTimeJumpContext> = Array.empty
+  /** 编译时返回上下文集合 */
+  private returns: Array<compileTimeReturnContext> = Array.empty
+  /** 自定义指令脚本映射表 */
+  private scriptMap: HashMap<any> = {}
+  /** 参数正则表达式映射表 */
+  private paramRegExpMap: HashMap<RegExp> = {}
+  /** 参数字符串 */
+  public parameters: string = ''
+  /** 显示文本指令内容 */
+  public textContent: string = ''
+  /** 显示选项进入分支 */
+  public choiceIndex: number = -1
+  /** 显示选项内容列表 */
+  public choiceContents: Array<string> = []
+  /** 返回值的键 */
+  public returnKey: symbol = Symbol('RETURN_VALUE')
+  /** 继承事件的指令列表的键 */
+  public inheritKey = Symbol("INHERITED_COMMANDS")
+  /** 异步指令块的指令列表的键 */
+  public asyncKey = Symbol("ASYNC_COMMANDS")
+  /** 自定义指令脚本管理器 */
+  public custom!: ScriptManager
 
 	/** 初始化自定义指令 */
 	public initialize(): void {
