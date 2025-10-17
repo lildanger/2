@@ -177,15 +177,13 @@ UpdateLog.initialize = function () {
 	$('#update-log').on('closed', this.windowClosed)
 }
 
-// 关闭窗口
-
 // 打开窗口
 UpdateLog.open = function (items = null) {
 	if (items instanceof Array) {
 		Window.open('update-log')
 		this.update(items)
 	} else {
-		Updater.updateIncrementalChanges(Editor.latestProjectVersion)
+		Updater.updateIncrementalChanges(Updater.latestProjectVersion)
 	}
 }
 
@@ -736,6 +734,7 @@ Reference.findAllGuids = function (targetGuid = '') {
 			const plugin = plugins[i]
 			const json = JSON.stringify(plugin)
 			const path = `${dir}/${i}`
+			getPathOfGuid(plugin.id)
 			let match
 			while ((match = guidInJSON.exec(json))) {
 				pushToUsedMap(path, match[1] ?? match[2])

@@ -11635,9 +11635,11 @@ class CommandList extends HTMLElement {
 				text.addClass('invalid')
 			}
 			// 忽略textId的更新，重开一下事件编辑器就好了
-			const attrName = attr
-				? GameLocal.replace(attr.name)
-				: Command.parseUnlinkedId(id)
+			const attrName = String.compress(
+				attr
+					? GameLocal.replace(attr.name)
+					: Command.parseUnlinkedId(id)
+			)
 			if (text.textContent !== attrName) {
 				text.textContent = attrName
 			}
