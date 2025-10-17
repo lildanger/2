@@ -9077,8 +9077,8 @@ let Command = new class CommandCompiler {
 			const code = script.replace(escape, 'CurrentEvent.attributes["$1"]');
 			const fn = new Function(code);
 			return () => (fn(), true);
-		} catch (error) {
+		} catch  {
 			return null;
 		}
 	}
-})();
+}();
