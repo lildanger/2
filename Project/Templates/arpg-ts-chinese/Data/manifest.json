@@ -127,12 +127,12 @@
       "size": 533
     },
     {
-      "path": "Assets/技能/004 - 圣职者技能/403 - 魔法盾.d9f01f9144c00255.skill",
-      "size": 1841
+      "path": "Assets/技能/002 - 弓箭手技能/203 - 穿心箭.0677ede73c660435.skill",
+      "size": 1761
     },
     {
-      "path": "Assets/技能/004 - 圣职者技能/404 - 召唤老婆.43a476a6c8601b45.skill",
-      "size": 2006
+      "path": "Assets/技能/002 - 弓箭手技能/204 - 箭雨.5cb295722c2e1bfc.skill",
+      "size": 5306
     },
     {
       "path": "Assets/技能/003 - 法师技能/300 - 火球.2a39e76dfc12ee8e.skill",
@@ -153,6 +153,22 @@
     {
       "path": "Assets/技能/003 - 法师技能/304 - 冰封球.d58e81968a540da8.skill",
       "size": 2002
+    },
+    {
+      "path": "Assets/技能/004 - 圣职者技能/401 - 圣言术.b659a70fa284e0b8.skill",
+      "size": 5187
+    },
+    {
+      "path": "Assets/技能/004 - 圣职者技能/402 - 治疗术.015ba11b7016596b.skill",
+      "size": 1839
+    },
+    {
+      "path": "Assets/技能/004 - 圣职者技能/403 - 魔法盾.d9f01f9144c00255.skill",
+      "size": 1841
+    },
+    {
+      "path": "Assets/技能/004 - 圣职者技能/404 - 召唤老婆.43a476a6c8601b45.skill",
+      "size": 2006
     },
     {
       "path": "Assets/技能/005 - 怪物技能/900 - 攻击.76af4e41772ddda8.skill",
@@ -227,12 +243,12 @@
       "size": 4306
     },
     {
-      "path": "Assets/技能/004 - 圣职者技能/402 - 治疗术.4d76c2781fb50245.trigger",
-      "size": 2451
+      "path": "Assets/技能/002 - 弓箭手技能/202 - 冰冻箭.e79659aae91bfd9e.trigger",
+      "size": 2931
     },
     {
-      "path": "Assets/技能/004 - 圣职者技能/403 - 魔法盾.01e2a51501c33d84.trigger",
-      "size": 744
+      "path": "Assets/技能/002 - 弓箭手技能/203 - 穿心箭.cfa31609d8eca1ef.trigger",
+      "size": 3244
     },
     {
       "path": "Assets/技能/001 - 战士技能/103 - 圣剑.442e1679c04cf498.trigger",
@@ -283,6 +299,24 @@
       "size": 2112
       "path": "Assets/技能/003 - 法师技能/304 - 冰封球_冰锥.ceb8ab22092b4c9b.trigger",
       "size": 2112
+      "path": "Assets/技能/003 - 法师技能/304 - 冰封球_冰锥.ceb8ab22092b4c9b.trigger",
+      "size": 2112
+    },
+    {
+      "path": "Assets/技能/004 - 圣职者技能/401 - 圣言术.45806aa2151957e4.trigger",
+      "size": 4306
+    },
+    {
+      "path": "Assets/技能/004 - 圣职者技能/402 - 治疗术.4d76c2781fb50245.trigger",
+      "size": 2451
+    },
+    {
+      "path": "Assets/技能/004 - 圣职者技能/403 - 魔法盾.01e2a51501c33d84.trigger",
+      "size": 744
+    },
+    {
+      "path": "Assets/技能/004 - 圣职者技能/404 - 召唤老婆.cbecc880ed6d9ddd.trigger",
+      "size": 1903
     },
     {
       "path": "Assets/技能/005 - 怪物技能/900 - 攻击.41d1cf3c9500fc15.trigger",
@@ -489,18 +523,6 @@
       "size": 3815
     },
     {
-      "path": "Assets/UI/Boss生命条/创建Boss生命条.b1241fcaa736ffd5.event",
-      "size": 2069
-    },
-    {
-      "path": "Assets/UI/Boss生命条/删除Boss生命条.75dab87cf676cf96.event",
-      "size": 1240
-    },
-    {
-      "path": "Assets/UI/交易/打开交易窗口.116f445dbaae10c7.event",
-      "size": 3612
-    },
-    {
       "path": "Assets/UI/主菜单/主菜单_分数属性_更新.16ad6278e6384a0a.event",
       "size": 20030
     },
@@ -519,6 +541,26 @@
     {
       "path": "Assets/UI/主菜单/开关主菜单.384b535e7f04b897.event",
       "size": 1163
+    },
+    {
+      "path": "Assets/UI/交易/打开交易窗口.116f445dbaae10c7.event",
+      "size": 3612
+    },
+    {
+      "path": "Assets/UI/Boss生命条/创建Boss生命条.b1241fcaa736ffd5.event",
+      "size": 2069
+    },
+    {
+      "path": "Assets/UI/Boss生命条/删除Boss生命条.75dab87cf676cf96.event",
+      "size": 1240
+    },
+    {
+      "path": "Assets/UI/对话框/显示文本.dc5e5eb68fd85496.event",
+      "size": 11344
+    },
+    {
+      "path": "Assets/UI/对话框/显示选项.abc2b8975a8b64c0.event",
+      "size": 6118
     },
     {
       "path": "Assets/UI/主菜单/拖拽物品_鼠标弹起.0e0491b9870ec48a.event",
@@ -641,6 +683,10 @@
       "size": 2466
     },
     {
+      "path": "Assets/插件/全局插件/掉落物品/掉落物品获得事件.552ccea726c420e0.event",
+      "size": 21269
+    },
+    {
       "path": "Assets/测试用事件指令.bb0348bc4e21a598.event",
       "size": 2148
     }
@@ -715,6 +761,10 @@
       "size": 113489
     },
     {
+      "path": "Assets/UI/Boss生命条/Boss生命条.a8ebdfc3e5b314e4.ui",
+      "size": 21499
+    },
+    {
       "path": "Assets/UI/对话框/对话框.99c04d7e3832374b.ui",
       "size": 92847
     },
@@ -740,10 +790,6 @@
     }
   ],
   "animations": [
-    {
-      "path": "Assets/场景/场景动画/动画 - 场景.f3a21935b6828b17.anim",
-      "size": 8113
-    },
     {
       "path": "Assets/状态/状态动画/动画 - 状态.8d0ef30782c36995.anim",
       "size": 5016
@@ -773,6 +819,10 @@
       "size": 20184
     },
     {
+      "path": "Assets/场景/场景动画/动画 - 场景.f3a21935b6828b17.anim",
+      "size": 8113
+    },
+    {
       "path": "Assets/技能/000 - 公共技能/技能动画/动画 - 公共.f506be138f018327.anim",
       "size": 963
     },
@@ -781,16 +831,20 @@
       "size": 14355
     },
     {
-      "path": "Assets/技能/004 - 圣职者技能/技能动画/动画 - 圣职者.d37fa15080fd801f.anim",
-      "size": 7025
+      "path": "Assets/技能/002 - 弓箭手技能/技能动画/动画 - 弓箭手.e94d71029f9e8e66.anim",
+      "size": 19080
     },
     {
       "path": "Assets/技能/003 - 法师技能/技能动画/动画 - 法师.1fd96a521f0c9814.anim",
       "size": 80875
     },
     {
-      "path": "Assets/技能/002 - 弓箭手技能/技能动画/动画 - 弓箭手.e94d71029f9e8e66.anim",
-      "size": 19080
+      "path": "Assets/插件/全局插件/地图标记/地图标记_动画.9870648f11eebb64.anim",
+      "size": 2669
+    },
+    {
+      "path": "Assets/插件/全局插件/掉落物品/掉落物品_动画.8dec01bcad1be144.anim",
+      "size": 20184
     },
     {
       "path": "Assets/角色/角色动画/特效/角色 - 动画效果.06444bd79069b200.anim",
@@ -806,6 +860,14 @@
     }
   ],
   "particles": [
+    {
+      "path": "Assets/状态/状态动画/粒子 - 减速.553dc2b5b1207278.particle",
+      "size": 2089
+    },
+    {
+      "path": "Assets/状态/状态动画/粒子 - 魔法盾.08aaec2c6f50518c.particle",
+      "size": 2110
+    },
     {
       "path": "Assets/场景/场景动画/粒子 - 下雨.1f876c0485ad64a9.particle",
       "size": 2010
@@ -867,16 +929,20 @@
       "size": 1985
     },
     {
-      "path": "Assets/技能/004 - 圣职者技能/技能动画/粒子 - 召唤老婆.926ff70f7d0a9979.particle",
-      "size": 2143
+      "path": "Assets/技能/002 - 弓箭手技能/技能动画/粒子 - 冰冻箭.be975ab47db3714f.particle",
+      "size": 2089
     },
     {
-      "path": "Assets/技能/004 - 圣职者技能/技能动画/粒子 - 圣言术.930df2373bf0bb47.particle",
-      "size": 2023
+      "path": "Assets/技能/002 - 弓箭手技能/技能动画/粒子 - 爆裂箭 - 爆炸.7485bc1bac34c9a7.particle",
+      "size": 8028
     },
     {
-      "path": "Assets/技能/004 - 圣职者技能/技能动画/粒子 - 治疗术.0c07214f4bd6b744.particle",
-      "size": 4063
+      "path": "Assets/技能/002 - 弓箭手技能/技能动画/粒子 - 爆裂箭.d2dc4a7110026c76.particle",
+      "size": 5933
+    },
+    {
+      "path": "Assets/技能/002 - 弓箭手技能/技能动画/粒子 - 穿心箭.a40fe5b8fcc12d86.particle",
+      "size": 5935
     },
     {
       "path": "Assets/技能/003 - 法师技能/技能动画/粒子 - 冰封球.2e74e3641d8c688b.particle",
@@ -911,8 +977,8 @@
       "size": 2091
     },
     {
-      "path": "Assets/技能/002 - 弓箭手技能/技能动画/粒子 - 穿心箭.a40fe5b8fcc12d86.particle",
-      "size": 5935
+      "path": "Assets/插件/全局插件/掉落物品/掉落物品_粒子.1600ed24ed6e9f72.particle",
+      "size": 2131
     },
     {
       "path": "Assets/角色/角色动画/特效/角色 - 升级效果.fb604ebb0ab99206.particle",
@@ -1043,6 +1109,10 @@
     {
       "path": "Assets/技能/! 技能图标.a76bcfc585129656.png",
       "size": 1241934
+    },
+    {
+      "path": "Assets/状态/! 状态图标.969cc7da8bb5e984.png",
+      "size": 83568
     },
     {
       "path": "Assets/状态/! 状态图标.969cc7da8bb5e984.png",
@@ -1293,8 +1363,8 @@
       "size": 15623
     },
     {
-      "path": "Assets/插件/全局插件/地图标记/地图标记_选框.60868f0235927990.png",
-      "size": 15437
+      "path": "Assets/技能/005 - 怪物技能/技能动画/精灵 - 冲击波.18be8b76aa2d7ec4.png",
+      "size": 2932
     },
     {
       "path": "Assets/插件/全局插件/伤害数字/伤害数字_暴击.4a04123cc7bb302f.png",
@@ -1353,12 +1423,12 @@
       "size": 2932
     },
     {
-      "path": "Assets/技能/003 - 法师技能/技能动画/贴图 - 火球.16607ed2e8dccbb8.png",
-      "size": 8753
+      "path": "Assets/粒子/Basic/spiral/spiral_22.4137cd5c8fda1c1c.png",
+      "size": 0
     },
     {
-      "path": "Assets/技能/003 - 法师技能/技能动画/贴图 - 燃烧.91675a97ac48e009.png",
-      "size": 3683
+      "path": "Assets/粒子/Basic/spiral/spiral_23.eb31924b86465bc5.png",
+      "size": 0
     },
     {
       "path": "Assets/粒子/Basic/ding blood/dingbats-392.b84245a73aad8034.png",
@@ -2878,17 +2948,21 @@
     },
     {
       "path": "Assets/粒子/Complex/impacts/impact_4.0d358613bce98e83.png",
+      "path": "Assets/粒子/Complex/impacts/impact_4.0d358613bce98e83.png",
       "size": 0
     },
     {
+      "path": "Assets/粒子/Complex/impacts/impact_5.4f10e3fd71cf7904.png",
       "path": "Assets/粒子/Complex/impacts/impact_5.4f10e3fd71cf7904.png",
       "size": 0
     },
     {
       "path": "Assets/粒子/Complex/impacts/impact_6.3fb71602948199b5.png",
+      "path": "Assets/粒子/Complex/impacts/impact_6.3fb71602948199b5.png",
       "size": 0
     },
     {
+      "path": "Assets/粒子/Complex/impacts/impact_7.1d2be96c1b6b6925.png",
       "path": "Assets/粒子/Complex/impacts/impact_7.1d2be96c1b6b6925.png",
       "size": 0
     },
@@ -4865,8 +4939,8 @@
       "size": 0
     },
     {
-      "path": "Assets/角色/角色动画/特效/角色 - 升级.426e34f3a140add2.png",
-      "size": 5679
+      "path": "Assets/场景/视差图/雾.40b0703a8367977d.png",
+      "size": 182080
     }
   ],
   "audio": [
@@ -5731,11 +5805,11 @@
       "size": 0
     },
     {
-      "path": "Assets/音频/音效/S01L SoundPack/coins/Coins_hit_01.1f90354af5aeb9cf.wav",
+      "path": "Assets/音频/音效/S01L SoundPack/Metal/scrape_07.fdbb2877767ec58e.wav",
       "size": 0
     },
     {
-      "path": "Assets/音频/音效/S01L SoundPack/coins/Coins_shuffle_01.7160a53627642d47.wav",
+      "path": "Assets/音频/音效/S01L SoundPack/Water/water_pour_01.b04eb0942b797a0c.wav",
       "size": 0
     },
     {
@@ -5923,6 +5997,46 @@
       "size": 0
     },
     {
+      "path": "Assets/音频/音效/S01L SoundPack/squeak/Boxcutter_blade_retract.f6eb08956af2a96e.wav",
+      "size": 0
+    },
+    {
+      "path": "Assets/音频/音效/S01L SoundPack/squeak/boxcutter_retract_01.831c823e49acf940.wav",
+      "size": 0
+    },
+    {
+      "path": "Assets/音频/音效/S01L SoundPack/squeak/boxcutter_retract_02.53b4c73273830ed3.wav",
+      "size": 0
+    },
+    {
+      "path": "Assets/音频/音效/S01L SoundPack/squeak/boxcutter_retract_03.a7b4650f1049f788.wav",
+      "size": 0
+    },
+    {
+      "path": "Assets/音频/音效/S01L SoundPack/squeak/squeak_01.97b422406ec88bd2.wav",
+      "size": 0
+    },
+    {
+      "path": "Assets/音频/音效/S01L SoundPack/squeak/squeak_02.45bebf79a9dd4105.wav",
+      "size": 0
+    },
+    {
+      "path": "Assets/音频/音效/S01L SoundPack/squeak/squeak_long_01.0699f3d59e57dc62.wav",
+      "size": 0
+    },
+    {
+      "path": "Assets/音频/音效/S01L SoundPack/squeak/squeak_long_02.1a64e705b32b066e.wav",
+      "size": 0
+    },
+    {
+      "path": "Assets/音频/音效/S01L SoundPack/squeak/squeak_long_03.c30c56d478c91811.wav",
+      "size": 0
+    },
+    {
+      "path": "Assets/音频/音效/S01L SoundPack/squeak/squeak_long_04.7f6bcc99ccb7f588.wav",
+      "size": 0
+    },
+    {
       "path": "Assets/音频/音效/S01L SoundPack/ArcadeMk1/buttons/Button_multi_01.72e5c1c3d9c852d4.wav",
       "size": 0
     },
@@ -5932,30 +6046,6 @@
     },
     {
       "path": "Assets/音频/音效/S01L SoundPack/ArcadeMk1/buttons/Button_multi_slow_01.b58de5750403a8f8.wav",
-      "size": 0
-    },
-    {
-      "path": "Assets/音频/音效/S01L SoundPack/ArcadeMk1/buttons/Button_multi_slow_02.2e87e33e47bd26da.wav",
-      "size": 0
-    },
-    {
-      "path": "Assets/音频/音效/S01L SoundPack/ArcadeMk1/buttons/Button_smash_01.be2241aee86b3e23.wav",
-      "size": 0
-    },
-    {
-      "path": "Assets/音频/音效/S01L SoundPack/ArcadeMk1/buttons/Button_smash_02.284202fc4b201f16.wav",
-      "size": 0
-    },
-    {
-      "path": "Assets/音频/音效/S01L SoundPack/ArcadeMk1/buttons/Button_smash_03.51b9e865120a0a11.wav",
-      "size": 0
-    },
-    {
-      "path": "Assets/音频/音效/S01L SoundPack/ArcadeMk1/buttons/Button_smash_04.0301dc81f77ccfcc.wav",
-      "size": 0
-    },
-    {
-      "path": "Assets/音频/音效/S01L SoundPack/ArcadeMk1/buttons/Button_smash_05.0b78adfec8f91069.wav",
       "size": 0
     },
     {
@@ -5988,6 +6078,30 @@
     },
     {
       "path": "Assets/音频/音效/S01L SoundPack/ArcadeMk1/sticks/stick_move_05.303bacaf612e4f29.wav",
+      "size": 0
+    },
+    {
+      "path": "Assets/音频/音效/S01L SoundPack/ArcadeMk1/buttons/Button_multi_slow_02.2e87e33e47bd26da.wav",
+      "size": 0
+    },
+    {
+      "path": "Assets/音频/音效/S01L SoundPack/ArcadeMk1/buttons/Button_smash_01.be2241aee86b3e23.wav",
+      "size": 0
+    },
+    {
+      "path": "Assets/音频/音效/S01L SoundPack/ArcadeMk1/buttons/Button_smash_02.284202fc4b201f16.wav",
+      "size": 0
+    },
+    {
+      "path": "Assets/音频/音效/S01L SoundPack/ArcadeMk1/buttons/Button_smash_03.51b9e865120a0a11.wav",
+      "size": 0
+    },
+    {
+      "path": "Assets/音频/音效/S01L SoundPack/ArcadeMk1/buttons/Button_smash_04.0301dc81f77ccfcc.wav",
+      "size": 0
+    },
+    {
+      "path": "Assets/音频/音效/S01L SoundPack/ArcadeMk1/buttons/Button_smash_05.0b78adfec8f91069.wav",
       "size": 0
     },
     {
@@ -7165,8 +7279,8 @@
       ]
     },
     {
-      "path": "Assets/插件/全局插件/生命值条/生命值条.f0ee6c16284dcf99.ts",
-      "size": 18788,
+      "path": "Assets/插件/全局插件/对话系统.aa20eb36e72e9e90.ts",
+      "size": 12245,
       "parameters": [
         {
           "key": "state",
@@ -7260,7 +7374,7 @@
         {
           "key": "offsetY",
           "type": "number",
-          "value": -48
+          "value": 0
         },
         {
           "key": "scale",
@@ -7585,20 +7699,12 @@
       "size": 38
     },
     {
-      "path": "Assets/场景/图块/_cc0.53d388c935dcadff.txt",
-      "size": 58
-    },
-    {
       "path": "Assets/UI/标题画面/readme.ababdc6caf1a1b92.txt",
       "size": 151
     },
     {
-      "path": "Assets/场景/视差图/Starry Space Parallaxes/CC BY-SA 4.0.a5ebd44591d66daf.txt",
-      "size": 44
-    },
-    {
-      "path": "Assets/更多免费素材.96d0e3e19c6a887e.txt",
-      "size": 9214
+      "path": "Assets/场景/图块/_cc0.53d388c935dcadff.txt",
+      "size": 58
     },
     {
       "path": "Assets/音频/音效/Any Journey RPG Assets/! cc0 license.f5ff8d6543f775e0.txt",
@@ -7609,8 +7715,12 @@
       "size": 101
     },
     {
-      "path": "Assets/音频/音乐/Yet another free music pack/! cc by 4.0 license.0355289dee978f3b.txt",
-      "size": 111
+      "path": "Assets/音频/音效/Any Journey RPG Assets/! cc0 license.f5ff8d6543f775e0.txt",
+      "size": 89
+    },
+    {
+      "path": "Assets/音频/音效/Inteface SFX Pack/! cc0 license.c5fdc0fd01721b43.txt",
+      "size": 81
     },
     {
       "path": "Assets/音频/音效/S01L SoundPack/! cc0 license.d53c18c6b2042449.txt",
