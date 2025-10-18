@@ -89,13 +89,19 @@ const Resources = new (class {
 		const projectVersion = jsonParse.data?.['Project'] ?? '1.0.0'
 		let text = ''
 		let isUpdate = false
-		if (~this.compareVersions(editorVersion, Updater.latestEditorVersion)) {
+		if (
+			this.compareVersions(Updater.latestEditorVersion, editorVersion) ===
+			-1
+		) {
 			// 需要更新(Editor)
 			text = `编辑器 ${Updater.latestEditorVersion} -> ${editorVersion}`
 			isUpdate = true
 		}
 		if (
-			~this.compareVersions(projectVersion, Updater.latestProjectVersion)
+			this.compareVersions(
+				Updater.latestProjectVersion,
+				projectVersion
+			) === -1
 		) {
 			// 需要更新(Project)
 			text = `项目 ${Updater.latestProjectVersion} -> ${projectVersion}`
