@@ -27,7 +27,10 @@ if (!fs.existsSync(TemplatesPath))
 
 // 检测是否安装了资源包
 function isNoResource() {
-	const p = { ...PackMeta }
+	const bak = JSON.parse(JSON.stringify(PackMeta))
+	delete bak['Editor']
+	delete bak['Project']
+	const p = { ...bak }
 	Object.defineProperty(p, '@', {
 		value: false,
 		enumerable: false,
@@ -60,6 +63,7 @@ window.addEventListener('localize', () => {
 	Resources.initialize() // 初始化
 	if (!Resources.checkResources()) {
 		Resources.open(true)
+		Resources.checkEditorVersion() // 只检测编辑器版本
 	} else {
 		Resources.checkVersion()
 	}
@@ -276,3 +280,11 @@ const homeElem = $('#home-version')
 
 homeElem.textContent = `当前编辑器版本：${Updater.latestEditorVersion} 
 当前项目版本：${Updater.latestProjectVersion}`
+;(() => {
+	PackMeta['Editor'] = Updater.latestEditorVersion
+	PackMeta['Project'] = Updater.latestProjectVersion
+	fs.writeFileSync(
+		Path.join(__dirname, 'Script/module', 'packmeta.json'),
+		JSON.stringify(PackMeta)
+	)
+})()

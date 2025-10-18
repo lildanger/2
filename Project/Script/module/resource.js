@@ -20,6 +20,9 @@ const Resources = new (class {
 		)
 	}
 
+	/** 
+    @description 0 版本一致 | 1 v1版本大 | -1 v2版本大
+	*/
 	compareVersions(v1, v2) {
 		const normalize = (version) => version.replace(/^v/, '')
 
@@ -30,12 +33,6 @@ const Resources = new (class {
 		const parts2 = normalizedV2.split('.').map(Number)
 
 		const maxLength = Math.max(parts1.length, parts2.length)
-
-		/* 
-        0 版本一致
-        1 v1版本大
-        -1 v2版本大
-		 */
 
 		for (let i = 0; i < maxLength; i++) {
 			const num1 = parts1[i] || 0
@@ -79,6 +76,45 @@ const Resources = new (class {
 		fs.writeFileSync(tempPath, JSON.stringify(val))
 	}
 
+	async checkEditorVersion() {
+		const get = Local.createGetter('confirmation')
+		const url = `${this.fastGithubPrefix}https://raw.githubusercontent.com/Open-Yami-Community/yami-rpg-editor/refs/heads/main/Project/Script/module/packmeta.json`
+		const jsonParse = await Net.get(url, {
+			Headers: {
+				type: 'application/json'
+			}
+		})
+		if (!jsonParse) return
+		const editorVersion = jsonParse.data?.['Editor'] ?? '1.0.0'
+		const projectVersion = jsonParse.data?.['Project'] ?? '1.0.0'
+		let text = ''
+		let isUpdate = false
+		if (~this.compareVersions(editorVersion, Updater.latestEditorVersion)) {
+			// 需要更新(Editor)
+			text = `编辑器 ${Updater.latestEditorVersion} -> ${editorVersion}`
+			isUpdate = true
+		}
+		if (
+			~this.compareVersions(projectVersion, Updater.latestProjectVersion)
+		) {
+			// 需要更新(Project)
+			text = `项目 ${Updater.latestProjectVersion} -> ${projectVersion}`
+			isUpdate = true
+		}
+		if (isUpdate) {
+			Window.confirm(
+				{
+					message: `${text} \n 编辑器本体需要更新 \n 请到指定地址重新下载编辑器`
+				},
+				[
+					{
+						label: get('yes')
+					}
+				]
+			)
+		}
+	}
+
 	async checkVersion() {
 		let isReOpen = false
 		PackMeta = this.readTemplate() // 读取本地模板信息
@@ -110,6 +146,7 @@ const Resources = new (class {
 				}
 			])
 		}
+		this.checkEditorVersion()
 	}
 
 	temp(val) {
