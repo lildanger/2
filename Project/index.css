@@ -3805,6 +3805,16 @@ body.maximized > #title > #title-buttons > #title-maximize::after {
 	/* background-color: yellow; */
 }
 
+#home-version {
+	position: absolute;
+	margin-top: 40px;
+	width: 100%;
+	height: 100px;
+	font-weight: bold;
+	color: var(--home-title-color);
+	font-weight: bold;
+}
+
 #home-title {
 	position: absolute;
 	width: 100%;

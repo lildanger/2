@@ -270,3 +270,9 @@ UI.list.paste = function (_, callback) {
 		UI.requestRendering()
 	}
 }
+
+// 主界面 - 版本号
+const homeElem = $('#home-version')
+
+homeElem.textContent = `当前编辑器版本：${Updater.latestEditorVersion} 
+当前项目版本：${Updater.latestProjectVersion}`
