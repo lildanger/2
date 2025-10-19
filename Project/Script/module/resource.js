@@ -85,26 +85,12 @@ const Resources = new (class {
 			}
 		})
 		if (!jsonParse) return
-		const editorVersion = jsonParse.data?.['Editor'] ?? '1.0.0'
-		const projectVersion = jsonParse.data?.['Project'] ?? '1.0.0'
+		const version = jsonParse.data?.['Community'] ?? '250101'
 		let text = ''
 		let isUpdate = false
-		if (
-			this.compareVersions(Updater.latestEditorVersion, editorVersion) ===
-			-1
-		) {
+		if (CommunityVersion !== version) {
 			// 需要更新(Editor)
-			text = `编辑器 ${Updater.latestEditorVersion} -> ${editorVersion}`
-			isUpdate = true
-		}
-		if (
-			this.compareVersions(
-				Updater.latestProjectVersion,
-				projectVersion
-			) === -1
-		) {
-			// 需要更新(Project)
-			text = `项目 ${Updater.latestProjectVersion} -> ${projectVersion}`
+			text = `编辑器 ${CommunityVersion} -> ${version}`
 			isUpdate = true
 		}
 		if (isUpdate) {

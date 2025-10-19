@@ -2,6 +2,8 @@
 const fs = require('fs-extra')
 const yauzl = require('yauzl')
 
+const CommunityVersion = '251018' // 社区编辑器版本
+
 EventBus.once('editor_loaded', () => {
 	// 更新项目数据
 	const checkForProjectUpdatesOrigin = Editor.checkForProjectUpdates
@@ -30,6 +32,7 @@ function isNoResource() {
 	const bak = JSON.parse(JSON.stringify(PackMeta))
 	delete bak['Editor']
 	delete bak['Project']
+	delete bak['Community']
 	const p = { ...bak }
 	Object.defineProperty(p, '@', {
 		value: false,
@@ -278,11 +281,12 @@ UI.list.paste = function (_, callback) {
 // 主界面 - 版本号
 const homeElem = $('#home-version')
 
-homeElem.textContent = `当前编辑器版本：${Updater.latestEditorVersion} 
+homeElem.textContent = `当社区版本：${CommunityVersion} 当前编辑器版本：${Updater.latestEditorVersion} 
 当前项目版本：${Updater.latestProjectVersion}`
 ;(() => {
 	PackMeta['Editor'] = Updater.latestEditorVersion
 	PackMeta['Project'] = Updater.latestProjectVersion
+	PackMeta['Community'] = CommunityVersion
 	fs.writeFileSync(
 		Path.join(__dirname, 'Script/module', 'packmeta.json'),
 		JSON.stringify(PackMeta)
