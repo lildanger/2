@@ -292,3 +292,39 @@ homeElem.textContent = `当社区版本：${CommunityVersion} 当前编辑器版
 		JSON.stringify(PackMeta)
 	)
 })()
+
+// 自动图块 - 显示引用数量
+originAutoTileTemplateUpdate = AutoTile.templateList.update
+AutoTile.templateList.update = function () {
+	originAutoTileTemplateUpdate.call(this)
+	const autoList = Object.keys(Data.tilesets)
+		.map((v) => Data.tilesets[v])
+		.filter((v) => v.type === 'auto')
+	const countMap = {}
+	const data = this.data
+	// 计数
+	for (let i = 0; i < autoList.length; i++) {
+		const tiles = autoList[i].tiles
+		for (let j = 0; j < tiles.length; j++) {
+			const tile = tiles[j]
+
+			if (typeof tile !== 'object') continue // 可能不是对象
+			const template = tile.template
+			if (!countMap[template]) countMap[template] = 0
+			countMap[template]++
+			break // 只需要计数一次
+		}
+	}
+	// 显示
+	for (let i = 0; i < data.length; i++) {
+		const item = data[i]
+		const count = countMap[item.id] || 0
+		item.element.querySelector('.autoTile-count')?.remove()
+		const countElem = document.createElement('span')
+		countElem.className = 'autoTile-count'
+		countElem.style =
+			'color: var(--team-relation-mark-color-friend);padding:4px 2px;margin-left: 4px;'
+		countElem.textContent = count
+		item.element.append(countElem)
+	}
+}
