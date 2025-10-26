@@ -85,7 +85,7 @@ const Resources = new (class {
 			}
 		})
 		if (!jsonParse) return
-		const version = jsonParse.data?.['Community'] ?? '250101'
+		const version = jsonParse.data?.['Community'] ?? '25010100'
 		let text = ''
 		let isUpdate = false
 		if (CommunityVersion !== version) {
