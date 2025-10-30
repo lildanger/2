@@ -2,7 +2,18 @@ const Resources = new (class {
 	isStart = false // 首次启动显示
 	window = $('#resource')
 	content = $('#resource-content')
-	fastGithubPrefix = 'https://ghfast.top/' // 加速github
+	fastGithubArray = [
+		'https://cdn.gh-proxy.com/',
+		'https://proxy.pipers.cn/',
+		'https://gh.jasonzeng.dev/',
+		'https://hub.gitmirror.com/',
+		'https://ghfast.top/'
+	]
+	get fastGithubPrefix() {
+		return this.fastGithubArray[
+			Math.floor(Math.random() * this.fastGithubArray.length)
+		]
+	} // 加速github
 	loaded = false
 	constructor() {
 		$('#resource-check-version').on('click', () => this.checkVersion())
