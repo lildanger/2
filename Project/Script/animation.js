@@ -158,7 +158,8 @@ const Animation = {
 	drawEmitters: null,
 	emitParticles: null,
 	updateParticles: null,
-	drawParticles: null,
+	drawBackParticles: null,
+	drawFrontParticles: null,
 	drawCoordinateAxes: null,
 	drawJointNodes: null,
 	drawJointArrows: null,
@@ -2677,12 +2678,26 @@ Animation.updateParticles = function (deltaTime) {
 	}
 }
 
-// 绘制粒子
-Animation.drawParticles = function () {
+// 绘制背景粒子
+Animation.drawBackParticles = function () {
 	if (this.particleUpdating) {
 		const { emitters } = this.player
 		for (const emitter of emitters) {
-			emitter.draw()
+			if (emitter.layer.order === 'before') {
+				emitter.draw()
+			}
+		}
+	}
+}
+
+// 绘制前景粒子
+Animation.drawFrontParticles = function () {
+	if (this.particleUpdating) {
+		const { emitters } = this.player
+		for (const emitter of emitters) {
+			if (emitter.layer.order === 'after') {
+				emitter.draw()
+			}
 		}
 	}
 }
@@ -4107,8 +4122,9 @@ Animation.renderingFunction = function () {
 		Animation.drawBackground()
 		if (Animation.layers !== null) {
 			Animation.drawOnionskins()
+			Animation.drawBackParticles()
 			Animation.drawSpriteLayers()
-			Animation.drawParticles()
+			Animation.drawFrontParticles()
 			Animation.drawCoordinateAxes()
 			Animation.drawEmitters()
 			Animation.drawJointNodes()
@@ -6959,6 +6975,7 @@ Animation.Player = class AnimationPlayer {
 			if (!data) return
 			emitter = new Particle.Emitter(data)
 			emitter.matrix = this.matrix
+			emitter.layer = this.layer
 			this.emitter = emitter
 			this.animation.emitters.push(emitter)
 		}

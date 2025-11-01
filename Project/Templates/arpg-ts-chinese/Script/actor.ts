@@ -647,37 +647,37 @@ class Actor {
 		}
 	}
 
-	/** 加载初始角色库存 */
-	private loadInventory(): void {
-		const inventory = this.inventory;
-		const list = this.data.inventory;
-		const length = list.length;
-		// 创建初始物品和装备，避免触发获得事件
-		for (let i = 0; i < length; i++) {
-			const goods = list[i];
-			switch (goods.type) {
-				case "item": {
-					const data = Data.items[goods.id];
-					if (data) {
-						const item = new Item(data);
-						inventory.insert(item);
-						item.increase(goods.quantity);
-					}
-					continue;
-				}
-				case "equipment": {
-					const data = Data.equipments[goods.id];
-					if (data) {
-						inventory.insert(new Equipment(data));
-					}
-					continue;
-				}
-				case "money":
-					inventory.money += goods.money;
-					continue;
-			}
-		}
-	}
+  /** 加载初始角色库存 */
+  private loadInventory(): void {
+    const inventory = this.inventory
+    const list = this.data.inventory
+    const length = list.length
+    // 创建初始物品和装备，避免触发获得事件
+    for (let i = 0; i < length; i++) {
+      const asset = list[i]
+      switch (asset.type) {
+        case 'item': {
+          const data = Data.items[asset.id]
+          if (data) {
+            const item = new Item(data)
+            inventory.insert(item)
+            item.increase(asset.quantity)
+          }
+          continue
+        }
+        case 'equipment': {
+          const data = Data.equipments[asset.id]
+          if (data) {
+            inventory.insert(new Equipment(data))
+          }
+          continue
+        }
+        case 'money':
+          inventory.money += asset.money
+          continue
+      }
+    }
+  }
 
 	/**
 	 * 角色朝指定角度位移一段距离
@@ -1024,13 +1024,22 @@ class Actor {
 		}
 	}
 
-	/**
-	 * 设置通行区域
-	 * @param passage 通行区域
-	 */
-	public setPassage(passage: keyof ActorPassageMap): void {
-		this.passage = Actor.passageMap[passage];
-	}
+  /**
+   * 设置通行区域
+   * @param passage 通行区域
+   */
+  public setPassage(passage: keyof ActorPassageMap): void {
+    this.passage = Actor.passageMap[passage]
+  }
+
+  /**
+   * 设置角色优先级
+   * @param priority 优先级
+   */
+  public setPriority(priority: number): void {
+    this.priority = priority
+    this.animationManager.setPriority(priority)
+  }
 
 	/**
 	 * 移动角色
@@ -1529,34 +1538,38 @@ class ActorCollider {
 		this.lastY = this.actor.y;
 	}
 
-	/** 处理不可推动碰撞 */
-	public handleImmovableCollisions(): void {
-		const self = this.actor;
-		const ox = self.x;
-		const oy = self.y;
-		const half = this.half;
-		const expansion = Scene.binding!.maxColliderHalf;
-		// 获取探测范围所在的角色区间列表
-		const cells = Scene.actor.partition.get(
-			ox - half - expansion,
-			oy - half - expansion,
-			ox + half + expansion,
-			oy + half + expansion
-		);
-		const count = cells.count;
-		// 查找所有角色区间
-		for (let i = 0; i < count; i++) {
-			const actors = cells[i]!;
-			const length = actors.length;
-			// 查找区间中的所有角色
-			for (let i = 0; i < length; i++) {
-				const actor = actors[i] as Actor;
-				if (actor !== self && actor.collider.immovable) {
-					ActorCollider.handleCollisionBetweenTwoActors(self, actor, 1);
-				}
-			}
-		}
-	}
+  /** 处理不可推动碰撞 */
+  public handleImmovableCollisions(): void {
+    const self = this.actor
+    if (self.collider.weight === 0)
+    {
+      return
+    }
+    const ox = self.x
+    const oy = self.y
+    const half = this.half
+    const expansion = Scene.binding!.maxColliderHalf
+    // 获取探测范围所在的角色区间列表
+    const cells = Scene.actor.partition.get(
+      ox - half - expansion,
+      oy - half - expansion,
+      ox + half + expansion,
+      oy + half + expansion,
+    )
+    const count = cells.count
+    // 查找所有角色区间
+    for (let i = 0; i < count; i++) {
+      const actors = cells[i]!
+      const length = actors.length
+      // 查找区间中的所有角色
+      for (let i = 0; i < length; i++) {
+        const actor = actors[i] as Actor
+        if (actor !== self && actor.collider.immovable) {
+          ActorCollider.handleCollisionBetweenTwoActors(self, actor, 1)
+        }
+      }
+    }
+  }
 
 	/** 角色碰撞系统开关 */
 	public static actorCollisionEnabled: boolean = true;
@@ -2854,46 +2867,56 @@ class AnimationManager {
 		return this.keyMap[key];
 	}
 
-	/**
-	 * 设置动画播放器
-	 * @param key 动画键
-	 * @param animation 动画播放器
-	 */
-	public set(key: string, animation: AnimationPlayer): void {
-		if (key && this.keyMap[key] !== animation) {
-			animation.key = key;
-			animation.parent = this;
-			animation.setPosition(this.actor);
-			// 设置原始缩放系数
-			if (animation.rawScale === undefined) {
-				animation.rawScale = animation.scale;
-				animation.scale *= this.scale;
-			}
-			// 设置原始偏移Y
-			if (animation.rawOffsetY === undefined) {
-				animation.rawOffsetY = animation.offsetY;
-				animation.offsetY *= this.scale;
-			}
-			// 如果存在旧的动画替换它(销毁)
-			const oldAnim = this.keyMap[key];
-			if (oldAnim instanceof AnimationPlayer) {
-				// 继承一部分数据
-				animation.rawScale = oldAnim.rawScale;
-				animation.scale = oldAnim.scale;
-				animation.speed = oldAnim.speed;
-				animation.opacity = oldAnim.opacity;
-				animation.setMotion(oldAnim.motionName);
-				animation.setAngle(oldAnim.angle);
-				oldAnim.destroy();
-				this.list.replace(oldAnim, animation);
-				this.keyMap[key] = animation;
-			} else {
-				this.list.push(animation);
-				this.keyMap[key] = animation;
-			}
-			this.sort();
-		}
-	}
+  /**
+   * 设置动画播放器
+   * @param key 动画键
+   * @param animation 动画播放器
+   */
+  public set(key: string, animation: AnimationPlayer): void {
+    if (key && this.keyMap[key] !== animation) {
+      animation.key = key
+      animation.parent = this
+      animation.priority = this.actor.priority
+      animation.setPosition(this.actor)
+      // 设置原始缩放系数
+      if (animation.rawScale === undefined) {
+        animation.rawScale = animation.scale
+        animation.scale *= this.scale
+      }
+      // 设置原始偏移Y
+      if (animation.rawOffsetY === undefined) {
+        animation.rawOffsetY = animation.offsetY
+        animation.offsetY *= this.scale
+      }
+      // 如果存在旧的动画替换它(销毁)
+      const oldAnim = this.keyMap[key]
+      if (oldAnim instanceof AnimationPlayer) {
+        // 继承一部分数据
+        animation.rawScale = oldAnim.rawScale
+        animation.scale = oldAnim.scale
+        animation.speed = oldAnim.speed
+        animation.opacity = oldAnim.opacity
+        animation.setMotion(oldAnim.motionName)
+        animation.setAngle(oldAnim.angle)
+        oldAnim.destroy()
+        this.list.replace(oldAnim, animation)
+        this.keyMap[key] = animation
+      } else {
+        this.list.push(animation)
+        this.keyMap[key] = animation
+      }
+      // 设置默认顺序
+      if (animation.order === undefined) {
+        animation.order = 0
+      }
+      // 立即同步角度
+      if (animation.syncAngle)
+      {
+        animation.setAngle(this.actor.angle)
+      }
+      this.sort()
+    }
+  }
 
 	/**
 	 * 删除动画播放器
@@ -2992,18 +3015,28 @@ class AnimationManager {
 		}
 	}
 
-	/**
-	 * 设置动画优先级
-	 * @param key 动画键
-	 * @param priority 排序优先级
-	 */
-	public setPriority(key: string, priority: number): void {
-		const animation = this.keyMap[key];
-		if (animation) {
-			animation.priority = priority;
-			this.sort();
-		}
-	}
+  /**
+   * 设置动画渲染优先级(粒子)
+   * @param angle 角度(弧度)
+   */
+  public setPriority(priority: number): void {
+    for (const animation of this.list) {
+      animation.priority = priority
+    }
+  }
+
+  /**
+   * 设置动画排序顺序
+   * @param key 动画键
+   * @param order 顺序
+   */
+  public setOrder(key: string, order: number): void {
+    const animation = this.keyMap[key]
+    if (animation) {
+      animation.order = order
+      this.sort()
+    }
+  }
 
 	/**
 	 * 设置动画垂直偏移距离
@@ -3101,79 +3134,85 @@ class AnimationManager {
 		}
 	}
 
-	/**
-	 * 保存动画组件列表数据
-	 * @returns 动画组件存档数据列表
-	 */
-	public saveData(): Array<AnimationComponentSaveData> {
-		const length = this.list.length;
-		const animations = new Array(length);
-		for (let i = 0; i < length; i++) {
-			const animation = this.list[i];
-			// 编码为json时忽略undefined
-			animations[i] = {
-				id: animation.data.id,
-				key: animation.key,
-				rotatable: animation.rotatable,
-				syncAngle: animation.syncAngle,
-				angle: animation.angle,
-				scale: animation.rawScale,
-				speed: animation.speed,
-				opacity: animation.opacity,
-				priority: animation.priority,
-				offsetY: animation.rawOffsetY,
-				motion: animation.defaultMotion ?? undefined,
-				images: animation.priorityImages ?? undefined,
-			};
-		}
-		return animations;
-	}
+  /**
+   * 保存动画组件列表数据
+   * @returns 动画组件存档数据列表
+   */
+  public saveData(): Array<AnimationComponentSaveData> {
+    const length = this.list.length
+    const animations = new Array(length)
+    for (let i = 0; i < length; i++) {
+      const animation = this.list[i]
+      // 编码为json时忽略undefined
+      animations[i] = {
+        id: animation.data.id,
+        key: animation.key,
+        rotatable: animation.rotatable,
+        syncAngle: animation.syncAngle,
+        angle: animation.angle,
+        scale: animation.rawScale,
+        speed: animation.speed,
+        opacity: animation.opacity,
+        order: animation.order,
+        offsetY: animation.rawOffsetY,
+        motion: animation.defaultMotion ?? undefined,
+        images: animation.priorityImages ?? undefined,
+      }
+    }
+    return animations
+  }
 
-	/**
-	 * 加载动画组件列表数据
-	 * @param animations 动画组件存档数据列表
-	 */
-	public loadData(animations: Array<AnimationComponentSaveData>): void {
-		this.scale = this.actor.scale;
-		for (const savedData of animations) {
-			const data = Data.animations[savedData.id];
-			if (data) {
-				const animation = new AnimationPlayer(data);
-				animation.key = savedData.key;
-				animation.playing = false;
-				animation.rotatable = savedData.rotatable;
-				animation.syncAngle = savedData.syncAngle;
-				animation.rawScale = savedData.scale;
-				animation.scale = savedData.scale * this.scale;
-				animation.speed = savedData.speed;
-				animation.opacity = savedData.opacity;
-				animation.priority = savedData.priority;
-				animation.rawOffsetY = savedData.offsetY;
-				animation.offsetY = savedData.offsetY * this.scale;
-				animation.parent = this;
-				animation.setPosition(this.actor);
-				animation.setAngle(savedData.angle);
-				if (savedData.motion) {
-					animation.defaultMotion = savedData.motion;
-					animation.setMotion(savedData.motion);
-				}
-				if (savedData.images) {
-					animation.priorityImages = savedData.images;
-					animation.setSpriteImages(savedData.images);
-				}
-				this.list.push(animation);
-				this.keyMap[animation.key] = animation;
-			}
-		}
-	}
+  /**
+   * 加载动画组件列表数据
+   * @param animations 动画组件存档数据列表
+   */
+  public loadData(animations: Array<AnimationComponentSaveData>): void {
+    this.scale = this.actor.scale
+    for (const savedData of animations) {
+      // 补丁：2025-11-1，将priority改名为order
+      // 兼容旧存档，在合适的时候可以删除这段补丁
+      if (savedData.order === undefined) {
+        // @ts-ignore
+        savedData.order = savedData.priority
+      }
+      const data = Data.animations[savedData.id]
+      if (data) {
+        const animation = new AnimationPlayer(data)
+        animation.key = savedData.key
+        animation.playing = false
+        animation.rotatable = savedData.rotatable
+        animation.syncAngle = savedData.syncAngle
+        animation.rawScale = savedData.scale
+        animation.scale = savedData.scale * this.scale
+        animation.speed = savedData.speed
+        animation.opacity = savedData.opacity
+        animation.order = savedData.order
+        animation.priority = this.actor.priority
+        animation.rawOffsetY = savedData.offsetY
+        animation.offsetY = savedData.offsetY * this.scale
+        animation.parent = this
+        animation.setPosition(this.actor)
+        animation.setAngle(savedData.angle)
+        if (savedData.motion) {
+          animation.defaultMotion = savedData.motion
+          animation.setMotion(savedData.motion)
+        }
+        if (savedData.images) {
+          animation.priorityImages = savedData.images
+          animation.setSpriteImages(savedData.images)
+        }
+        this.list.push(animation)
+        this.keyMap[animation.key] = animation
+      }
+    }
+  }
 
-	/**
-	 * 动画组件排序器函数
-	 * @param a 动画播放器A
-	 * @param b 动画播放器B
-	 */
-	private static sorter = (a: AnimationPlayer, b: AnimationPlayer): number =>
-		a.priority - b.priority;
+  /**
+   * 动画组件排序器函数
+   * @param a 动画播放器A
+   * @param b 动画播放器B
+   */
+  private static sorter = (a: AnimationPlayer, b: AnimationPlayer): number => a.order! - b.order!
 }
 
 /** ******************************** 角色动画控制器 ******************************** */
@@ -4375,10 +4414,10 @@ class Item {
 		}
 	}
 
-	/** 将货物从库存中移除 */
-	public remove(): void {
-		this.parent?.remove(this);
-	}
+  /** 将物品从库存中移除 */
+  public remove(): void {
+    this.parent?.remove(this)
+  }
 
 	/**
 	 * 调用物品事件(共享库存的代价：需要传递事件触发角色)
@@ -4443,18 +4482,18 @@ class Item {
 /** ******************************** 库存 ******************************** */
 
 class Inventory {
-	/** 绑定的角色对象 */
-	public actor: Actor;
-	/** 库存中的金钱 */
-	public money: number;
-	/** 预测下一个空槽的插入位置 */
-	private pointer: number;
-	/** 库存货物列表 */
-	public list: Array<Item | Equipment>;
-	/** {ID:货物集合}映射表 */
-	public idMap: HashMap<Array<Item | Equipment>>;
-	/** 库存管理器版本(随着货物添加和移除发生变化) */
-	public version: number;
+  /** 绑定的角色对象 */
+  public actor: Actor
+  /** 库存中的金钱 */
+  public money: number
+  /** 预测下一个空槽的插入位置 */
+  private pointer: number
+  /** 库存资产列表 */
+  public list: Array<Item | Equipment>
+  /** {ID:资产集合}映射表 */
+  public idMap: HashMap<Array<Item | Equipment>>
+  /** 库存管理器版本(随着资产添加和移除发生变化) */
+  public version: number
 
 	/**
 	 * 角色库存管理器
@@ -4469,168 +4508,166 @@ class Inventory {
 		this.version = 0;
 	}
 
-	/**
-	 * 获取库存货物
-	 * @param id 货物文件ID
-	 * @returns 物品或装备实例
-	 */
-	public get(id: string): Item | Equipment | undefined {
-		return this.idMap[id]?.[0];
-	}
+  /**
+   * 获取库存资产
+   * @param id 资产文件ID
+   * @returns 物品或装备实例
+   */
+  public get(id: string): Item | Equipment | undefined {
+    return this.idMap[id]?.[0]
+  }
 
-	/**
-	 * 获取库存货物列表
-	 * @param id 货物文件ID
-	 * @returns 物品或装备列表
-	 */
-	public getList(id: string): Array<Item | Equipment> | undefined {
-		return this.idMap[id];
-	}
+  /**
+   * 获取库存资产列表
+   * @param id 资产文件ID
+   * @returns 物品或装备列表
+   */
+  public getList(id: string): Array<Item | Equipment> | undefined {
+    return this.idMap[id]
+  }
 
-	/** 重置库存中的物品、装备、金币 */
-	public reset(): void {
-		// 遍历库存中的所有物品装备，重置属性
-		for (const goods of this.list) {
-			goods.parent = null;
-			goods.order = -1;
-		}
-		// 重置库存属性
-		this.money = 0;
-		this.pointer = 0;
-		this.list = [];
-		this.idMap = {};
-		this.version++;
-	}
+  /** 重置库存中的物品、装备、金币 */
+  public reset(): void {
+    // 遍历库存中的所有物品装备，重置属性
+    for (const asset of this.list) {
+      asset.parent = null
+      asset.order = -1
+    }
+    // 重置库存属性
+    this.money = 0
+    this.pointer = 0
+    this.list = []
+    this.idMap = {}
+    this.version++
+  }
 
-	/**
-	 * 插入物品或装备到库存中的空位置
-	 * @param goods 插入货物
-	 */
-	public insert(goods: Item | Equipment): void {
-		if (goods.parent === null) {
-			// 将物品插入到空槽位
-			let i = this.pointer;
-			const { list } = this;
-			while (list[i]?.order === i) {
-				i++;
-			}
-			list.splice(i, 0, goods);
-			goods.order = i;
-			goods.parent = this;
-			// 将物品添加到映射表
-			this.addToMap(goods);
-			// 设置空槽位起始查找位置
-			this.pointer = i + 1;
-			this.version++;
-		}
-	}
+  /**
+   * 插入物品或装备到库存中的空位置
+   * @param asset 插入资产
+   */
+  public insert(asset: Item | Equipment): void {
+    if (asset.parent === null) {
+      // 将物品插入到空槽位
+      let i = this.pointer
+      const {list} = this
+      while (list[i]?.order === i) {i++}
+      list.splice(i, 0, asset)
+      asset.order = i
+      asset.parent = this
+      // 将物品添加到映射表
+      this.addToMap(asset)
+      // 设置空槽位起始查找位置
+      this.pointer = i + 1
+      this.version++
+    }
+  }
 
-	/**
-	 * 从库存中移除物品或装备
-	 * @param goods 移除货物
-	 */
-	public remove(goods: Item | Equipment): void {
-		if (goods.parent === this) {
-			const { list } = this;
-			const i = list.indexOf(goods);
-			list.splice(i, 1);
-			goods.order = -1;
-			goods.parent = null;
-			// 将物品从映射表中移除
-			this.removeFromMap(goods);
-			// 设置空槽位起始查找位置
-			if (this.pointer > i) {
-				this.pointer = i;
-			}
-			this.version++;
-		}
-	}
+  /**
+   * 从库存中移除物品或装备
+   * @param asset 移除资产
+   */
+  public remove(asset: Item | Equipment): void {
+    if (asset.parent === this) {
+      const {list} = this
+      const i = list.indexOf(asset)
+      list.splice(i, 1)
+      asset.order = -1
+      asset.parent = null
+      // 将物品从映射表中移除
+      this.removeFromMap(asset)
+      // 设置空槽位起始查找位置
+      if (this.pointer > i) {
+        this.pointer = i
+      }
+      this.version++
+    }
+  }
 
-	/**
-	 * 添加物品或装备到映射表
-	 * @param goods 添加货物
-	 */
-	private addToMap(goods: Item | Equipment): void {
-		if (this.idMap[goods.id]) {
-			this.idMap[goods.id]!.push(goods);
-		} else {
-			this.idMap[goods.id] = [goods];
-		}
-	}
+  /**
+   * 添加物品或装备到映射表
+   * @param asset 添加资产
+   */
+  private addToMap(asset: Item | Equipment): void {
+    if (this.idMap[asset.id]) {
+      this.idMap[asset.id]!.push(asset)
+    } else {
+      this.idMap[asset.id] = [asset]
+    }
+  }
 
-	/**
-	 * 从映射表中移除物品或装备
-	 * @param goods 移除对象
-	 */
-	private removeFromMap(goods: Item | Equipment): void {
-		this.idMap[goods.id]?.remove(goods);
-		if (this.idMap[goods.id]?.length === 0) {
-			delete this.idMap[goods.id];
-		}
-	}
+  /**
+   * 从映射表中移除物品或装备
+   * @param asset 移除对象
+   */
+  private removeFromMap(asset: Item | Equipment): void {
+    this.idMap[asset.id]?.remove(asset)
+    if (this.idMap[asset.id]?.length === 0) {
+      delete this.idMap[asset.id]
+    }
+  }
 
-	/**
-	 * 交换物品或装备(如果存在)在库存中的位置
-	 * @param order1 货物1的位置
-	 * @param order2 货物2的位置
-	 */
-	public swap(order1: number, order2: number): void {
-		if (order1 >= 0 && order2 >= 0 && order1 !== order2) {
-			// 确保order1小于order2
-			if (order1 > order2) {
-				const temp = order1;
-				order1 = order2;
-				order2 = temp;
-			}
-			const { list } = this;
-			const goods1 = list.find(a => a.order === order1);
-			const goods2 = list.find(a => a.order === order2);
-			if (goods1 && goods2) {
-				// 同时存在两个物品
-				const pos1 = list.indexOf(goods1);
-				const pos2 = list.indexOf(goods2);
-				goods1.order = order2;
-				goods2.order = order1;
-				list[pos1] = goods2;
-				list[pos2] = goods1;
-				this.version++;
-			} else if (goods1) {
-				// 存在索引较小的物品
-				const pos1 = list.indexOf(goods1);
-				list.splice(pos1, 1);
-				let pos2 = pos1;
-				const { length } = list;
-				while (pos2 < length) {
-					if (list[pos2].order > order2) {
-						break;
-					}
-					pos2++;
-				}
-				goods1.order = order2;
-				list.splice(pos2, 0, goods1);
-				this.version++;
-				// 设置空槽位起始查找位置
-				if (this.pointer > pos1) {
-					this.pointer = pos1;
-				}
-			} else if (goods2) {
-				// 存在索引较大的物品
-				const pos2 = list.indexOf(goods2);
-				list.splice(pos2, 1);
-				let pos1 = pos2;
-				while (--pos1 >= 0) {
-					if (list[pos1].order < order1) {
-						pos1++;
-						break;
-					}
-				}
-				pos1 = Math.max(pos1, 0);
-				goods2.order = order1;
-				list.splice(pos1, 0, goods2);
-				this.version++;
-			}
-		}
-	}
+  /**
+   * 交换物品或装备(如果存在)在库存中的位置
+   * @param order1 资产1的位置
+   * @param order2 资产2的位置
+   */
+  public swap(order1: number, order2: number): void {
+    if (order1 >= 0 && order2 >= 0 && order1 !== order2) {
+      // 确保order1小于order2
+      if (order1 > order2) {
+        const temp = order1
+        order1 = order2
+        order2 = temp
+      }
+      const {list} = this
+      const asset1 = list.find(a => a.order === order1)
+      const asset2 = list.find(a => a.order === order2)
+      if (asset1 && asset2) {
+        // 同时存在两个物品
+        const pos1 = list.indexOf(asset1)
+        const pos2 = list.indexOf(asset2)
+        asset1.order = order2
+        asset2.order = order1
+        list[pos1] = asset2
+        list[pos2] = asset1
+        this.version++
+      } else if (asset1) {
+        // 存在索引较小的物品
+        const pos1 = list.indexOf(asset1)
+        list.splice(pos1, 1)
+        let pos2 = pos1
+        const {length} = list
+        while (pos2 < length) {
+          if (list[pos2].order > order2) {
+            break
+          }
+          pos2++
+        }
+        asset1.order = order2
+        list.splice(pos2, 0, asset1)
+        this.version++
+        // 设置空槽位起始查找位置
+        if (this.pointer > pos1) {
+          this.pointer = pos1
+        }
+      } else if (asset2) {
+        // 存在索引较大的物品
+        const pos2 = list.indexOf(asset2)
+        list.splice(pos2, 1)
+        let pos1 = pos2
+        while (--pos1 >= 0) {
+          if (list[pos1].order < order1) {
+            pos1++
+            break
+          }
+        }
+        pos1 = Math.max(pos1, 0)
+        asset2.order = order1
+        list.splice(pos1, 0, asset2)
+        this.version++
+      }
+    }
+  }
 
 	/**
 	 * 排序库存中的对象
@@ -4658,20 +4695,20 @@ class Inventory {
 		this.version++;
 	}
 
-	/**
-	 * 查找指定的物品或装备数量
-	 * @param id 物品或装备的文件ID
-	 * @returns 货物的数量
-	 */
-	public count(id: string): number {
-		const list = this.getList(id);
-		if (!list) return 0;
-		let count = 0;
-		for (const goods of list) {
-			count += goods instanceof Item ? goods.quantity : 1;
-		}
-		return count;
-	}
+  /**
+   * 查找指定的物品或装备数量
+   * @param id 物品或装备的文件ID
+   * @returns 资产的数量
+   */
+  public count(id: string): number {
+    const list = this.getList(id)
+    if (!list) return 0
+    let count = 0
+    for (const asset of list) {
+      count += asset instanceof Item ? asset.quantity : 1
+    }
+    return count
+  }
 
 	//
 	/**

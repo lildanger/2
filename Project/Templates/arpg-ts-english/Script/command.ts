@@ -90,8 +90,6 @@ let Command = new class CommandCompiler {
   public returnKey: symbol = Symbol('RETURN_VALUE')
   /** 继承事件的指令列表的键 */
   public inheritKey = Symbol("INHERITED_COMMANDS")
-  /** 异步指令块的指令列表的键 */
-  public asyncKey = Symbol("ASYNC_COMMANDS")
   /** 自定义指令脚本管理器 */
   public custom!: ScriptManager
 
@@ -126,6 +124,7 @@ let Command = new class CommandCompiler {
       commands: functions,
       index: 0,
       loop: loop,
+      iterator: false,
       path: '',
     }
     // 创建标签集合与跳转列表
@@ -583,8 +582,8 @@ let Command = new class CommandCompiler {
       case 'by-id-inventory': {
         const getActor = Command.compileActor(equipment.actor)
         return () => {
-          const goods = getActor()?.inventory.get(equipment.equipmentId)
-          return goods instanceof Equipment ? goods : undefined
+          const asset = getActor()?.inventory.get(equipment.equipmentId)
+          return asset instanceof Equipment ? asset : undefined
         }
       }
       case 'variable':
@@ -611,8 +610,8 @@ let Command = new class CommandCompiler {
       case 'by-id': {
         const getActor = Command.compileActor(item.actor)
         return () => {
-          const goods = getActor()?.inventory.get(item.itemId)
-          return goods instanceof Item ? goods : undefined
+          const asset = getActor()?.inventory.get(item.itemId)
+          return asset instanceof Item ? asset : undefined
         }
       }
       case 'variable':
@@ -3077,6 +3076,7 @@ let Command = new class CommandCompiler {
           }
           break
       }
+      Command.stack.get().iterator = true
       switch (data) {
         default: {
           const iterator = compileCommonIterator(variable ?? touchId!)
@@ -3120,8 +3120,16 @@ let Command = new class CommandCompiler {
     let i = stack.length
     while (--i >= 0) {
       if (stack[i].loop) {
-        const {commands, index} = stack[i - 1]
-        return Command.goto(commands, index + 1)
+        const {commands, index, iterator} = stack[i - 1]
+        const jump = Command.goto(commands, index + 1)
+        // 如果跳出的是遍历循环，移除相关上下文
+        if (iterator) {
+          return () => {
+            CurrentEvent.forEach?.shift()
+            return jump()
+          }
+        }
+        return jump
       }
     }
     return null
@@ -4063,25 +4071,8 @@ let Command = new class CommandCompiler {
         return () => {
           const copy = Object.create(commandList) as CommandFunctionList
           copy.inheritance = CurrentEvent
-          const mainEvent = CurrentEvent as any
-          if (mainEvent[Command.asyncKey] === undefined) {
-            mainEvent[Command.asyncKey] = []
-            CurrentEvent.onFinish(() => {
-              let i = asyncEvents.length
-              while (--i >= 0) {
-                asyncEvents[i].finish()
-              }
-            })
-          }
-          const asyncEvents = mainEvent[Command.asyncKey] as Array<EventHandler>
           const asyncEvent = new EventHandler(copy)
           EventHandler.call(asyncEvent, CurrentEvent.updaters)
-          if (!asyncEvent.complete) {
-            asyncEvents.push(asyncEvent)
-            asyncEvent.onFinish(() => {
-              asyncEvents.remove(asyncEvent)
-            })
-          }
           return true
         }
       }
@@ -6380,7 +6371,7 @@ let Command = new class CommandCompiler {
           animation.defaultMotion = motionName
           animation.rotatable = rotatable
           animation.syncAngle = syncAngle
-          animation.priority = priority
+          animation.order = priority
           animation.offsetY = offsetY
           actor.animationManager.set(key, animation)
         }
@@ -6444,7 +6435,8 @@ let Command = new class CommandCompiler {
       }
       case 'set-priority':
         return () => {
-          getActor()?.animationManager.setPriority(key, priority!)
+          // 补丁：2025-11-1，修改SetPriority为SetOrder
+          getActor()?.animationManager.setOrder(key, priority!)
           return true
         }
       case 'set-offsetY':

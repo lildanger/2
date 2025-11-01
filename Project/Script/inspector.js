@@ -8576,9 +8576,15 @@ export default class Plugin {
 			{ name: 'Inherit', value: 'inherit' }
 		])
 
+		// 创建顺序选项
+		$('#animParticleLayer-order').loadItems([
+			{ name: 'Behind Sprites', value: 'before' },
+			{ name: 'Front of Sprites', value: 'after' }
+		])
+
 		// 侦听事件
 		const elements = $(
-			'#animParticleLayer-particleId, #animParticleLayer-position, #animParticleLayer-angle'
+			'#animParticleLayer-particleId, #animParticleLayer-position, #animParticleLayer-angle, #animParticleLayer-order'
 		)
 		elements.on('input', this.paramInput)
 		elements.on('focus', Inspector.inputFocus)
@@ -8602,6 +8608,7 @@ export default class Plugin {
 			particleId: '',
 			position: 'absolute',
 			angle: 'default',
+			order: 'after',
 			frames: [Inspector.animParticleFrame.create()]
 		}
 	}
@@ -8617,6 +8624,7 @@ export default class Plugin {
 			write('particleId')
 			write('position')
 			write('angle')
+			write('order')
 		}
 	}
 
@@ -8641,6 +8649,7 @@ export default class Plugin {
 				break
 			case 'position':
 			case 'angle':
+			case 'order':
 				if (layer[key] !== value) {
 					layer[key] = value
 				}

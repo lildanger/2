@@ -90,8 +90,6 @@ let Command = new class CommandCompiler {
   public returnKey: symbol = Symbol('RETURN_VALUE')
   /** 继承事件的指令列表的键 */
   public inheritKey = Symbol("INHERITED_COMMANDS")
-  /** 异步指令块的指令列表的键 */
-  public asyncKey = Symbol("ASYNC_COMMANDS")
   /** 自定义指令脚本管理器 */
   public custom!: ScriptManager
 
@@ -112,71 +110,67 @@ let Command = new class CommandCompiler {
 		}
 	}
 
-	/**
-	 * 编译指令
-	 * @param commands 指令数据列表
-	 * @param callback 指令执行完毕时回调函数
-	 * @param loop 当前指令列表是否处于循环状态
-	 * @returns 编译后的事件指令函数列表
-	 */
-	public compile(
-		commands: CommandDataList,
-		callback?: CommandFunction,
-		loop: boolean = false
-	): CommandFunctionList {
-		const stack = this.stack;
-		const functions = new CommandFunctionList();
-		const context: CompileTimeCommandContext = {
-			commands: functions,
-			index: 0,
-			loop: loop,
-			path: "",
-		};
-		// 创建标签集合与跳转列表
-		if (stack.length === 0) {
-			context.path = commands.path;
-			this.labels = {};
-			this.jumps = [];
-			this.returns = [];
-		}
-		stack.push(context);
-		const length = commands.length;
-		for (let i = 0; i < length; i++) {
-			const command = commands[i];
-			// 如果指令是函数，添加并跳过
-			if (typeof command === "function") {
-				functions[context.index++] = command;
-				continue;
-			}
-			const id = command.id;
-			// 跳过禁用的事件指令
-			if (id[0] === "!") continue;
-			// 编译内置和自定义指令
-			const fn =
-				id in this
-					? (this as any)[id](command.params)
-					: this.compileScript(command);
-			// 跳过无效编译函数
-			if (fn === null) continue;
-			if (typeof fn === "function") {
-				functions[context.index++] = fn;
-				continue;
-			}
-			for (const cmdfn of fn) {
-				functions[context.index++] = cmdfn;
-			}
-		}
-		// 添加栈尾回调函数
-		functions.push(callback ?? Command.readStack);
-		stack.pop();
-		// 编译跳转
-		if (stack.length === 0) {
-			Command.compileJumps();
-			Command.compileReturns(context);
-		}
-		// 返回编译后的函数列表
-		return functions;
-	}
+  /**
+   * 编译指令
+   * @param commands 指令数据列表
+   * @param callback 指令执行完毕时回调函数
+   * @param loop 当前指令列表是否处于循环状态
+   * @returns 编译后的事件指令函数列表
+   */
+  public compile(commands: CommandDataList, callback?: CommandFunction, loop: boolean = false): CommandFunctionList {
+    const stack = this.stack
+    const functions = new CommandFunctionList()
+    const context: CompileTimeCommandContext = {
+      commands: functions,
+      index: 0,
+      loop: loop,
+      iterator: false,
+      path: '',
+    }
+    // 创建标签集合与跳转列表
+    if (stack.length === 0) {
+      context.path = commands.path
+      this.labels = {}
+      this.jumps = []
+      this.returns = []
+    }
+    stack.push(context)
+    const length = commands.length
+    for (let i = 0; i < length; i++) {
+      const command = commands[i]
+      // 如果指令是函数，添加并跳过
+      if (typeof command === 'function') {
+        functions[context.index++] = command
+        continue
+      }
+      const id = command.id
+      // 跳过禁用的事件指令
+      if (id[0] === '!') continue
+      // 编译内置和自定义指令
+      const fn = id in this
+      ? (this as any)[id](command.params)
+      : this.compileScript(command)
+      // 跳过无效编译函数
+      if (fn === null) continue
+      if (typeof fn === 'function') {
+        functions[context.index++] = fn
+        continue
+      }
+      for (const cmdfn of fn) {
+        functions[context.index++] = cmdfn
+      }
+    }
+    // 添加栈尾回调函数
+    functions.push(callback ?? Command.readStack)
+    stack.pop()
+    // 编译跳转
+    if (stack.length === 0) {
+      Command.compileJumps()
+      Command.compileReturns(context)
+    }
+    // 返回编译后的函数列表
+    return functions
+  }
 
 	/**
 	 * 编译独立指令
@@ -581,72 +575,67 @@ let Command = new class CommandCompiler {
 		}
 	}
 
-	/**
-	 * 编译装备对象
-	 * @param equipment 装备访问器
-	 * @returns 装备访问器函数
-	 */
-	public compileEquipment(
-		equipment: EquipmentGetter
-	): () => Equipment | undefined {
-		switch (equipment.type) {
-			case "trigger":
-				return () => CurrentEvent.triggerEquipment;
-			case "latest":
-				return () => Equipment.latest;
-			case "by-slot": {
-				const getActor = Command.compileActor(equipment.actor);
-				const getSlot = Command.compileEnumValue(equipment.slot);
-				return () => {
-					return getActor()?.equipment.get(getSlot());
-				};
-			}
-			case "by-id-equipped": {
-				const getActor = Command.compileActor(equipment.actor);
-				return () => getActor()?.equipment.getById(equipment.equipmentId);
-			}
-			case "by-id-inventory": {
-				const getActor = Command.compileActor(equipment.actor);
-				return () => {
-					const goods = getActor()?.inventory.get(equipment.equipmentId);
-					return goods instanceof Equipment ? goods : undefined;
-				};
-			}
-			case "variable":
-				return Command.compileVariable(
-					equipment.variable,
-					Attribute.EQUIPMENT_GET
-				);
-		}
-	}
+  /**
+   * 编译装备对象
+   * @param equipment 装备访问器
+   * @returns 装备访问器函数
+   */
+  public compileEquipment(equipment: EquipmentGetter): () => Equipment | undefined {
+    switch (equipment.type) {
+      case 'trigger':
+        return () => CurrentEvent.triggerEquipment
+      case 'latest':
+        return () => Equipment.latest
+      case 'by-slot': {
+        const getActor = Command.compileActor(equipment.actor)
+        const getSlot = Command.compileEnumValue(equipment.slot)
+        return () => {
+          return getActor()?.equipment.get(getSlot())
+        }
+      }
+      case 'by-id-equipped': {
+        const getActor = Command.compileActor(equipment.actor)
+        return () => getActor()?.equipment.getById(equipment.equipmentId)
+      }
+      case 'by-id-inventory': {
+        const getActor = Command.compileActor(equipment.actor)
+        return () => {
+          const asset = getActor()?.inventory.get(equipment.equipmentId)
+          return asset instanceof Equipment ? asset : undefined
+        }
+      }
+      case 'variable':
+        return Command.compileVariable(equipment.variable, Attribute.EQUIPMENT_GET)
+    }
+  }
 
-	/**
-	 * 编译物品对象
-	 * @param item 物品访问器
-	 * @returns 物品访问器函数
-	 */
-	public compileItem(item: ItemGetter): () => Item | undefined {
-		switch (item.type) {
-			case "trigger":
-				return () => CurrentEvent.triggerItem;
-			case "latest":
-				return () => Item.latest;
-			case "by-key": {
-				const getActor = Command.compileActor(item.actor);
-				const getShortcutKey = Command.compileEnumValue(item.key);
-				return () => getActor()?.shortcut.getItem(getShortcutKey());
-			}
-			case "by-id": {
-				const getActor = Command.compileActor(item.actor);
-				return () => {
-					const goods = getActor()?.inventory.get(item.itemId);
-					return goods instanceof Item ? goods : undefined;
-				};
-			}
-			case "variable":
-				return Command.compileVariable(item.variable, Attribute.ITEM_GET);
-		}
-	}
+  /**
+   * 编译物品对象
+   * @param item 物品访问器
+   * @returns 物品访问器函数
+   */
+  public compileItem(item: ItemGetter): () => Item | undefined {
+    switch (item.type) {
+      case 'trigger':
+        return () => CurrentEvent.triggerItem
+      case 'latest':
+        return () => Item.latest
+      case 'by-key': {
+        const getActor = Command.compileActor(item.actor)
+        const getShortcutKey = Command.compileEnumValue(item.key)
+        return () => getActor()?.shortcut.getItem(getShortcutKey())
+      }
+      case 'by-id': {
+        const getActor = Command.compileActor(item.actor)
+        return () => {
+          const asset = getActor()?.inventory.get(item.itemId)
+          return asset instanceof Item ? asset : undefined
+        }
+      }
+      case 'variable':
+        return Command.compileVariable(item.variable, Attribute.ITEM_GET)
+    }
+  }
 
 	/** 编译场景位置对象 */
 	public compilePosition(
@@ -3302,135 +3291,125 @@ let Command = new class CommandCompiler {
 			};
 		};
 
-		/** 遍历 */
-		return function ({
-			data,
-			list,
-			actor,
-			element,
-			groupId,
-			variable,
-			saveIndex,
-			touchId,
-			commands,
-		}: {
-			data: string;
-			list?: VariableGetter;
-			actor?: ActorGetter;
-			element?: ElementGetter;
-			groupId?: string;
-			variable?: VariableGetter;
-			saveIndex?: VariableGetter;
-			touchId?: VariableGetter;
-			commands: CommandDataList;
-		}): CommandFunction | null {
-			if (commands.length === 0) {
-				return null;
-			}
-			let getList: () => Array<any> | undefined;
-			switch (data) {
-				case "list":
-					getList = Command.compileVariable(list!, LIST_GET);
-					break;
-				case "skill":
-				case "state":
-				case "equipment":
-				case "inventory":
-					getList = compileActorComponentList(actor!, data);
-					break;
-				case "element": {
-					const getElement = Command.compileElement(element!);
-					getList = () => getElement()?.children.slice();
-					break;
-				}
-				case "member":
-					getList = () => Party.members.slice();
-					break;
-				case "attribute": {
-					const group = Attribute.getGroup(groupId!);
-					const attrKeys = group?.list.map(item => item.key) ?? [];
-					getList = () => attrKeys;
-					break;
-				}
-				case "enum": {
-					const group = Enum.getGroup(groupId!);
-					const enumValues = group?.list.map(item => item.value) ?? [];
-					getList = () => enumValues;
-					break;
-				}
-				case "touch":
-					getList = () => {
-						return Input.event instanceof ScriptTouchEvent
-							? Input.event.touches.map(touch => touch.id)
-							: [];
-					};
-					break;
-				case "changed-touch":
-					getList = () => {
-						return Input.event instanceof ScriptTouchEvent
-							? Input.event.changedTouches.map(touch => touch.id)
-							: [];
-					};
-					break;
-			}
-			switch (data) {
-				default: {
-					const iterator = compileCommonIterator(variable ?? touchId!);
-					const loopCommands = Command.compile(commands, iterator, true);
-					return () => {
-						const list = getList();
-						// @ts-ignore
-						if (list?.length > 0) {
-							if (!CurrentEvent.forEach) CurrentEvent.forEach = [];
-							CurrentEvent.forEach.unshift({ list: list!, index: 0 });
-							CommandList = loopCommands;
-							iterator();
-						}
-						return true;
-					};
-				}
-				case "save": {
-					const iterator = compileSaveIterator(saveIndex!);
-					const loopCommands = Command.compile(commands, iterator, true);
-					return () => {
-						const event = CurrentEvent;
-						Data.loadSaveMeta().then(list => {
-							if (list.length !== 0) {
-								if (!event.forEach) event.forEach = [];
-								event.forEach.unshift({ list, index: 0 });
-								event.commands = loopCommands;
-								event.index = loopCommands.length - 1;
-							}
-							event.continue();
-						});
-						return CurrentEvent.pause();
-					};
-				}
-			}
-		};
-	})();
+    /** 遍历 */
+    return function ({data, list, actor, element, groupId, variable, saveIndex, touchId, commands}: {
+      data: string
+      list?: VariableGetter
+      actor?: ActorGetter
+      element?: ElementGetter
+      groupId?: string
+      variable?: VariableGetter
+      saveIndex?: VariableGetter
+      touchId?: VariableGetter
+      commands: CommandDataList
+    }): CommandFunction | null {
+      if (commands.length === 0) {
+        return null
+      }
+      let getList: () => Array<any> | undefined
+      switch (data) {
+        case 'list':
+          getList = Command.compileVariable(list!, LIST_GET)
+          break
+        case 'skill':
+        case 'state':
+        case 'equipment':
+        case 'inventory':
+          getList = compileActorComponentList(actor!, data)
+          break
+        case 'element': {
+          const getElement = Command.compileElement(element!)
+          getList = () => getElement()?.children.slice()
+          break
+        }
+        case 'member':
+          getList = () => Party.members.slice()
+          break
+        case 'attribute': {
+          const group = Attribute.getGroup(groupId!)
+          const attrKeys = group?.list.map(item => item.key) ?? []
+          getList = () => attrKeys
+          break
+        }
+        case 'enum': {
+          const group = Enum.getGroup(groupId!)
+          const enumValues = group?.list.map(item => item.value) ?? []
+          getList = () => enumValues
+          break
+        }
+        case 'touch':
+          getList = () => {
+            return Input.event instanceof ScriptTouchEvent
+            ? Input.event.touches.map(touch => touch.id)
+            : []
+          }
+          break
+        case 'changed-touch':
+          getList = () => {
+            return Input.event instanceof ScriptTouchEvent
+            ? Input.event.changedTouches.map(touch => touch.id)
+            : []
+          }
+          break
+      }
+      Command.stack.get().iterator = true
+      switch (data) {
+        default: {
+          const iterator = compileCommonIterator(variable ?? touchId!)
+          const loopCommands = Command.compile(commands, iterator, true)
+          return () => {
+            const list = getList()
+            // @ts-ignore
+            if (list?.length > 0) {
+              if (!CurrentEvent.forEach) CurrentEvent.forEach = []
+              CurrentEvent.forEach.unshift({list: list!, index: 0})
+              CommandList = loopCommands
+              iterator()
+            }
+            return true
+          }
+        }
+        case 'save': {
+          const iterator = compileSaveIterator(saveIndex!)
+          const loopCommands = Command.compile(commands, iterator, true)
+          return () => {
+            const event = CurrentEvent
+            Data.loadSaveMeta().then(list => {
+              if (list.length !== 0) {
+                if (!event.forEach) event.forEach = []
+                event.forEach.unshift({list, index: 0})
+                event.commands = loopCommands
+                event.index = loopCommands.length - 1
+              }
+              event.continue()
+            })
+            return CurrentEvent.pause()
+          }
+        }
+      }
+    }
+  }()
 
-	/** 跳出循环（支持嵌套遍历）*/
-	protected break(): CommandFunction | null {
-		const { stack } = this;
-		let i = stack.length;
-		while (--i >= 0) {
-			if (stack[i].loop) {
-				// 找到最近的循环所在的上一层编译上下文
-				const { commands, index } = stack[i - 1];
-				const jump = Command.goto(commands, index + 1);
-				// 生成运行时函数：先弹出 forEach 迭代器，再跳转
-				return () => {
-					const fe = CurrentEvent.forEach;
-					if (fe && fe.length > 0) {
-						fe.shift(); // 移除当前（最内层）迭代器上下文
-					}
-					return jump();
-				};
-			}
-		}
-		return null;
-	}
+  /** 跳出循环 */
+  protected break(): CommandFunction | null {
+    const {stack} = this
+    let i = stack.length
+    while (--i >= 0) {
+      if (stack[i].loop) {
+        const {commands, index, iterator} = stack[i - 1]
+        const jump = Command.goto(commands, index + 1)
+        // 如果跳出的是遍历循环，移除相关上下文
+        if (iterator) {
+          return () => {
+            CurrentEvent.forEach?.shift()
+            return jump()
+          }
+        }
+        return jump
+      }
+    }
+    return null
+  }
 
 	/** 继续循环 */
 	protected continue(): CommandFunction | null {
@@ -4545,66 +4524,35 @@ let Command = new class CommandCompiler {
 		};
 	}
 
-	/** 指令块 */
-	protected block({
-		note,
-		asynchronous,
-		commands,
-	}: {
-		note: string;
-		asynchronous: boolean;
-		commands: CommandDataList;
-	}): CommandFunction | CommandFunctionList {
-		// 补丁：2025-3-21
-		if (asynchronous === undefined) {
-			asynchronous = false;
-		}
-		switch (asynchronous) {
-			case false: {
-				// 补丁：2025-7-28 xuran
-				const blockEndCallback = () => false; // 返回 false 结束指令块执行，但不结束整个事件
-				const functions = Command.compile(commands, blockEndCallback);
-				return () => {
-					// 保存当前执行状态
-					const savedCommandList = CommandList;
-					const savedCommandIndex = CommandIndex;
-					// 切换到指令块执行
-					CommandList = functions;
-					CommandIndex = 0;
-					// 执行指令块中的所有指令
-					while (CommandList[CommandIndex++]?.()) {}
-					// 恢复执行状态
-					CommandList = savedCommandList;
-					CommandIndex = savedCommandIndex;
-					return true;
-				};
-			}
-			case true: {
-				const commandList = Command.compileIndependent(commands);
-				commandList.type = "asynchronous";
-				return () => {
-					const copy = Object.create(commandList) as CommandFunctionList;
-					copy.inheritance = CurrentEvent;
-					const mainEvent = CurrentEvent as any;
-					if (mainEvent[Command.asyncKey] === undefined) {
-						mainEvent[Command.asyncKey] = [];
-					}
-					const asyncEvents = mainEvent[
-						Command.asyncKey
-					] as Array<EventHandler>;
-					const asyncEvent = new EventHandler(copy);
-					EventHandler.call(asyncEvent, CurrentEvent.updaters);
-					if (!asyncEvent.complete) {
-						asyncEvents.push(asyncEvent);
-						asyncEvent.onFinish(() => {
-							asyncEvents.remove(asyncEvent);
-						});
-					}
-					return true;
-				};
-			}
-		}
-	}
+  /** 指令块 */
+  protected block({note, asynchronous, commands}: {
+    note: string,
+    asynchronous: boolean,
+    commands: CommandDataList,
+  }): CommandFunction | CommandFunctionList {
+    // 补丁：2025-3-21
+    if (asynchronous === undefined) {
+      asynchronous = false
+    }
+    switch (asynchronous) {
+      case false: {
+        const functions = Command.compile(commands)
+        functions.remove(Command.readStack)
+        return functions
+      }
+      case true: {
+        const commandList = Command.compileIndependent(commands)
+        commandList.type = 'asynchronous'
+        return () => {
+          const copy = Object.create(commandList) as CommandFunctionList
+          copy.inheritance = CurrentEvent
+          const asyncEvent = new EventHandler(copy)
+          EventHandler.call(asyncEvent, CurrentEvent.updaters)
+          return true
+        }
+      }
+    }
+  }
 
 	/** 插入标签 */
 	protected label({ name }: { name: string }): null {
@@ -7268,160 +7216,135 @@ let Command = new class CommandCompiler {
 		};
 	}
 
-	/** 添加动画组件 */
-	protected addAnimationComponent({
-		actor,
-		animationId,
-		motion,
-		rotatable,
-		syncAngle,
-		priority,
-		offsetY,
-	}: {
-		actor: ActorGetter;
-		animationId: string;
-		motion: string;
-		rotatable: boolean;
-		syncAngle: boolean;
-		priority: number;
-		offsetY: number;
-	}): CommandFunction | null {
-		syncAngle = syncAngle ?? false; // 补丁
-		offsetY = offsetY ?? 0; // 补丁
-		const animData = Data.animations[animationId];
-		if (!animData) return null;
-		const key = animationId + motion;
-		const getActor = Command.compileActor(actor);
-		const motionName = Enum.getValue(motion);
-		return () => {
-			const actor = getActor();
-			if (actor) {
-				const animation = new AnimationPlayer(animData);
-				if (animation.setMotion(motionName)) {
-					animation.playing = false;
-					animation.defaultMotion = motionName;
-					animation.rotatable = rotatable;
-					animation.syncAngle = syncAngle;
-					animation.priority = priority;
-					animation.offsetY = offsetY;
-					actor.animationManager.set(key, animation);
-				}
-			}
-			return true;
-		};
-	}
+  /** 添加动画组件 */
+  protected addAnimationComponent({actor, animationId, motion, rotatable, syncAngle, priority, offsetY}: {
+    actor: ActorGetter
+    animationId: string
+    motion: string
+    rotatable: boolean
+    syncAngle: boolean
+    priority: number
+    offsetY: number
+  }): CommandFunction | null {
+    syncAngle = syncAngle ?? false // 补丁
+    offsetY = offsetY ?? 0 // 补丁
+    const animData = Data.animations[animationId]
+    if (!animData) return null
+    const key = animationId + motion
+    const getActor = Command.compileActor(actor)
+    const motionName = Enum.getValue(motion)
+    return () => {
+      const actor = getActor()
+      if (actor) {
+        const animation = new AnimationPlayer(animData)
+        if (animation.setMotion(motionName)) {
+          animation.playing = false
+          animation.defaultMotion = motionName
+          animation.rotatable = rotatable
+          animation.syncAngle = syncAngle
+          animation.order = priority
+          animation.offsetY = offsetY
+          actor.animationManager.set(key, animation)
+        }
+      }
+      return true
+    }
+  }
 
-	/** 设置动画组件 */
-	protected setAnimationComponent({
-		actor,
-		animationId,
-		motion,
-		operation,
-		angle,
-		scale,
-		speed,
-		opacity,
-		priority,
-		offsetY,
-		spriteId,
-		image,
-		playMotion,
-		wait,
-	}: {
-		actor: ActorGetter;
-		animationId: string;
-		motion: string;
-		operation: string;
-		angle?: AngleGetter;
-		scale?: number;
-		speed?: number | VariableGetter;
-		opacity?: number;
-		priority?: number;
-		offsetY?: number;
-		spriteId?: string;
-		image?: string;
-		playMotion?: string;
-		wait?: boolean;
-	}): CommandFunction {
-		const key = animationId + motion;
-		const getActor = Command.compileActor(actor);
-		switch (operation) {
-			case "set-angle": {
-				const getAngle = Command.compileAngle(angle!);
-				return () => {
-					const actor = getActor();
-					const animation = actor?.animationManager.get(key);
-					if (animation) animation.setAngle(getAngle(actor));
-					return true;
-				};
-			}
-			case "set-scale": {
-				const getScale = Command.compileNumber(scale!);
-				return () => {
-					const scale = Math.clamp(getScale(), 0, 10);
-					getActor()?.animationManager.setScale(key, scale);
-					return true;
-				};
-			}
-			case "set-speed": {
-				const getSpeed = Command.compileNumber(speed!);
-				return () => {
-					const animation = getActor()?.animationManager.get(key);
-					if (animation) animation.speed = Math.clamp(getSpeed(), 0, 10);
-					return true;
-				};
-			}
-			case "set-opacity": {
-				const getOpacity = Command.compileNumber(opacity!);
-				return () => {
-					const animation = getActor()?.animationManager.get(key);
-					if (animation) animation.opacity = Math.clamp(getOpacity(), 0, 1);
-					return true;
-				};
-			}
-			case "set-priority":
-				return () => {
-					getActor()?.animationManager.setPriority(key, priority!);
-					return true;
-				};
-			case "set-offsetY":
-				return () => {
-					getActor()?.animationManager.setOffsetY(key, offsetY!);
-					return true;
-				};
-			case "set-sprite":
-				return () => {
-					getActor()?.animationManager.setSprite(key, spriteId!, image!);
-					return true;
-				};
-			case "play-motion": {
-				const motionName = Enum.getValue(playMotion!);
-				return () => {
-					const actor = getActor();
-					if (actor) {
-						const animation = actor.animationManager.playMotion(
-							key,
-							motionName
-						);
-						if (wait && animation) {
-							const event = CurrentEvent;
-							animation.onFinish(() => {
-								event.continue();
-							});
-							return CurrentEvent.pause();
-						}
-					}
-					return true;
-				};
-			}
-			case "stop-motion":
-				return () => {
-					getActor()?.animationManager.stopMotion(key);
-					return true;
-				};
-		}
-		throw new Error("Compiling Error");
-	}
+  /** 设置动画组件 */
+  protected setAnimationComponent({actor, animationId, motion, operation, angle, scale, speed, opacity, priority, offsetY, spriteId, image, playMotion, wait}: {
+    actor: ActorGetter
+    animationId: string
+    motion: string
+    operation: string
+    angle?: AngleGetter
+    scale?: number
+    speed?: number | VariableGetter
+    opacity?: number
+    priority?: number
+    offsetY?: number
+    spriteId?: string
+    image?: string
+    playMotion?: string
+    wait?: boolean
+  }): CommandFunction {
+    const key = animationId + motion
+    const getActor = Command.compileActor(actor)
+    switch (operation) {
+      case 'set-angle': {
+        const getAngle = Command.compileAngle(angle!)
+        return () => {
+          const actor = getActor()
+          const animation = actor?.animationManager.get(key)
+          if (animation) animation.setAngle(getAngle(actor))
+          return true
+        }
+      }
+      case 'set-scale': {
+        const getScale = Command.compileNumber(scale!)
+        return () => {
+          const scale = Math.clamp(getScale(), 0, 10)
+          getActor()?.animationManager.setScale(key, scale)
+          return true
+        }
+      }
+      case 'set-speed': {
+        const getSpeed = Command.compileNumber(speed!)
+        return () => {
+          const animation = getActor()?.animationManager.get(key)
+          if (animation) animation.speed = Math.clamp(getSpeed(), 0, 10)
+          return true
+        }
+      }
+      case 'set-opacity': {
+        const getOpacity = Command.compileNumber(opacity!)
+        return () => {
+          const animation = getActor()?.animationManager.get(key)
+          if (animation) animation.opacity = Math.clamp(getOpacity(), 0, 1)
+          return true
+        }
+      }
+      case 'set-priority':
+        return () => {
+          // 补丁：2025-11-1，修改SetPriority为SetOrder
+          getActor()?.animationManager.setOrder(key, priority!)
+          return true
+        }
+      case 'set-offsetY':
+        return () => {
+          getActor()?.animationManager.setOffsetY(key, offsetY!)
+          return true
+        }
+      case 'set-sprite':
+        return () => {
+          getActor()?.animationManager.setSprite(key, spriteId!, image!)
+          return true
+        }
+      case 'play-motion': {
+        const motionName = Enum.getValue(playMotion!)
+        return () => {
+          const actor = getActor()
+          if (actor) {
+            const animation = actor.animationManager.playMotion(key, motionName)
+            if (wait && animation) {
+              const event = CurrentEvent
+              animation.onFinish(() => {
+                event.continue()
+              })
+              return CurrentEvent.pause()
+            }
+          }
+          return true
+        }
+      }
+      case 'stop-motion':
+        return () => {
+          getActor()?.animationManager.stopMotion(key)
+          return true
+        }
+    }
+    throw new Error('Compiling Error')
+  }
 
 	/** 移除动画组件 */
 	protected removeAnimationComponent({

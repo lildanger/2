@@ -455,20 +455,36 @@ const createEditorWindow = function () {
 				editor.webContents.setZoomFactor(1)
 			})
 	})
+
+	let forceCloseId = -1
+
+	// 计划强制关闭应用
+	function scheduleForceClose() {
+		// 如果渲染线程未响应，超时2秒后退出应用
+		forceCloseId = setTimeout(() => {
+			if (!editor.stopCloseEvent) {
+				editor.stopCloseEvent = true
+				editor.close()
+			}
+		}, 2000)
+	}
+
+	// 取消强制关闭应用
+	function cancelForceClose() {
+		if (forceCloseId !== -1) {
+			clearTimeout(forceCloseId)
+			forceCloseId = -1
+		}
+	}
+	editor.cancelForceClose = cancelForceClose
+
 	// 侦听窗口关闭事件
 	editor.on('close', (event) => {
 		if (!editor.stopCloseEvent) {
 			apkProcessor.abortBuild()
-			new Promise((r) => stopTSC(r))
 			editor.send('before-close-window')
 			event.preventDefault()
-			// 如果渲染线程未响应，超时2秒后退出应用
-			setTimeout(() => {
-				if (!editor.stopCloseEvent) {
-					editor.stopCloseEvent = true
-					editor.close()
-				}
-			}, 2000)
+			scheduleForceClose()
 		}
 	})
 
@@ -700,6 +716,12 @@ ipcMain.on('maximize-window', (event) => {
 ipcMain.on('close-window', (event) => {
 	const window = getWindowFromEvent(event)
 	window.close()
+})
+
+// 阻止关闭窗口
+ipcMain.on('prevent-close-window', (event) => {
+	const window = getWindowFromEvent(event)
+	window.cancelForceClose()
 })
 
 // 强制关闭窗口
