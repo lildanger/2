@@ -769,32 +769,29 @@ let Command = new class CommandCompiler {
 		}
 	}
 
-	/**
-	 * 编译光源对象
-	 * @param light 光源访问器
-	 * @returns 光源访问器函数
-	 */
-	private compileLight(light: LightGetter): () => SceneLight | undefined {
-		switch (light.type) {
-			case "trigger":
-				return () => Command.filterValidObject(CurrentEvent.triggerLight);
-			case "latest":
-				return () => Command.filterValidObject(SceneLight.latest);
-			case "by-id": {
-				const { presetId } = light;
-				return () => {
-					return Scene.entity.get(presetId) as SceneLight | undefined;
-				};
-			}
-			case "variable": {
-				const getLight = Command.compileVariable(
-					light.variable,
-					Attribute.LIGHT_GET
-				);
-				return Command.filterValidObject(getLight());
-			}
-		}
-	}
+  /**
+   * 编译光源对象
+   * @param light 光源访问器
+   * @returns 光源访问器函数
+   */
+  private compileLight(light: LightGetter): () => SceneLight | undefined {
+    switch (light.type) {
+      case 'trigger':
+        return () => Command.filterValidObject(CurrentEvent.triggerLight)
+      case 'latest':
+        return () => Command.filterValidObject(SceneLight.latest)
+      case 'by-id': {
+        const {presetId} = light
+        return () => {
+          return Scene.entity.get(presetId) as SceneLight | undefined
+        }
+      }
+      case 'variable': {
+        const getLight = Command.compileVariable(light.variable, Attribute.LIGHT_GET)
+        return () => Command.filterValidObject(getLight())
+      }
+    }
+  }
 
 	/**
 	 * 编译区域对象

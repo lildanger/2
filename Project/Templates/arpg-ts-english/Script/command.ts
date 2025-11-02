@@ -763,7 +763,7 @@ let Command = new class CommandCompiler {
       }
       case 'variable': {
         const getLight = Command.compileVariable(light.variable, Attribute.LIGHT_GET)
-        return Command.filterValidObject(getLight())
+        return () => Command.filterValidObject(getLight())
       }
     }
   }
