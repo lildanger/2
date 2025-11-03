@@ -3216,7 +3216,7 @@ let Command = new class CommandCompiler {
 	}
 
 	/** 遍历 */
-	protected forEach = (function forEach(IIFE) {
+	protected forEach = function forEach(IIFE) {
 		const { SET, LIST_GET } = Attribute;
 
     // 编译通用迭代器
