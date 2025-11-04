@@ -1561,6 +1561,8 @@ class ScriptGamepadEvent {
   public gamepad: Gamepad
   /** 摇杆角度(默认: -1) */
   public stickAngle: number
+  /** 摇杆强度(默认: 0) */
+  public stickMagnitude: number
   /** 键码(默认: -1) */
   public buttonCode: number
   /** 键名(默认: '') */
@@ -1574,6 +1576,7 @@ class ScriptGamepadEvent {
   constructor(gamepad: Gamepad) {
     this.gamepad = gamepad
     this.stickAngle = Controller.stickAngle
+    this.stickMagnitude = Controller.stickMagnitude
     this.buttonCode = Controller.buttonCode
     this.buttonName = Controller.buttonName
     this.states = Controller.states

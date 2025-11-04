@@ -5080,99 +5080,87 @@ let Command = new class CommandCompiler {
 		};
 	}
 
-	/** 设置按钮 */
-	protected setButton({
-		element,
-		properties,
-	}: {
-		element: ElementGetter;
-		properties: Array<{ key: string; value: any }>;
-	}): CommandFunction {
-		const method = this.setButton as any;
-		if (!method.initialized) {
-			method.initialized = true;
-			method.arrayMap = {
-				normalClip: true,
-				hoverClip: true,
-				activeClip: true,
-				normalTint: true,
-				hoverTint: true,
-				activeTint: true,
-			};
-		}
-		const getElement = Command.compileElement(element);
-		const variables: Array<{ key: string; value: any }> = [];
-		const constants: Array<any> = [];
-		for (const property of properties) {
-			switch (property.key) {
-				case "content": {
-					const getter = Command.compileTextContent(property.value);
-					// @ts-ignore
-					if (!getter.constant) {
-						variables.push({
-							key: property.key,
-							value: getter,
-						});
-						continue;
-					}
-					// 如果内容是常量，进入默认分支
-				}
-				default:
-					constants.push(property);
-					continue;
-			}
-		}
-		// 对单属性变量进行优化
-		if (variables.length === 1 && constants.length === 0) {
-			const { key, value } = variables[0];
-			return () => {
-				const element = getElement();
-				if (element instanceof ButtonElement) {
-					// @ts-ignore
-					element[key] = value();
-				}
-				return true;
-			};
-		}
-		// 对单属性常量进行优化
-		if (variables.length === 0 && constants.length === 1) {
-			const { key, value } = constants[0];
-			return () => {
-				const element = getElement();
-				if (element instanceof ButtonElement) {
-					if (method.arrayMap[key]) {
-						// @ts-ignore
-						Array.fill(element[key], value);
-					} else {
-						// @ts-ignore
-						element[key] = value;
-					}
-				}
-				return true;
-			};
-		}
-		return () => {
-			const element = getElement();
-			if (element instanceof ButtonElement) {
-				for (const property of variables) {
-					// @ts-ignore
-					element[property.key] = property.value();
-				}
-				for (const property of constants) {
-					if (element instanceof ButtonElement) {
-						if (method.arrayMap[property.key]) {
-							// @ts-ignore
-							element[property.key].set(property.value);
-						} else {
-							// @ts-ignore
-							element[property.key] = property.value;
-						}
-					}
-				}
-			}
-			return true;
-		};
-	}
+  /** 设置按钮 */
+  protected setButton({element, properties}: {
+    element: ElementGetter
+    properties: Array<{key: string, value: any}>
+  }): CommandFunction {
+    const method = this.setButton as any
+    if (!method.initialized) {
+      method.initialized = true
+      method.arrayMap = {
+        'normalClip': true,
+        'hoverClip': true,
+        'activeClip': true,
+        'normalTint': true,
+        'hoverTint': true,
+        'activeTint': true,
+      }
+    }
+    const getElement = Command.compileElement(element)
+    const variables: Array<{key: string, value: any}> = []
+    const constants: Array<any> = []
+    for (const property of properties) {
+      switch (property.key) {
+        case 'content': {
+          const getter = Command.compileTextContent(property.value)
+          // @ts-ignore
+          if (!getter.constant) {
+            variables.push({
+              key: property.key,
+              value: getter,
+            })
+            continue
+          }
+          // 如果内容是常量，进入默认分支
+        }
+        default:
+          constants.push(property)
+          continue
+      }
+    }
+    return () => {
+      const element = getElement()
+      if (element instanceof ButtonElement) {
+        for (const property of variables) {
+          // @ts-ignore
+          element[property.key] = property.value()
+        }
+        for (const property of constants) {
+          if (element instanceof ButtonElement) {
+            if (method.arrayMap[property.key]) {
+              // @ts-ignore
+              Array.fill(element[property.key], property.value)
+              switch (property.key) {
+                case 'normalTint':
+                  if (element.imageEffect === 'none') {
+                    element.imageEffect = 'tint-1'
+                  }
+                  break
+                case 'hoverTint':
+                  if (element.imageEffect === 'none' ||
+                    element.imageEffect === 'tint-1') {
+                    element.imageEffect = 'tint-2'
+                  }
+                  break
+                case 'activeTint':
+                  if (element.imageEffect === 'none' ||
+                    element.imageEffect === 'tint-1' ||
+                    element.imageEffect === 'tint-2') {
+                    element.imageEffect = 'tint-3'
+                  }
+                  break
+              }
+            } else {
+              // @ts-ignore
+              element[property.key] = property.value
+            }
+          }
+        }
+      }
+      return true
+    }
+  }
 
 	/** 控制按钮 */
 	protected controlButton({
@@ -7570,22 +7558,19 @@ let Command = new class CommandCompiler {
 		};
 	}
 
-	/** 放弃目标 */
-	protected discardTargets({
-		actor,
-		selector,
-		distance,
-	}: {
-		actor: ActorGetter;
-		selector: ActorSelector;
-		distance: number;
-	}): CommandFunction {
-		const getActor = Command.compileActor(actor);
-		return () => {
-			getActor()?.target.discard(selector, distance);
-			return true;
-		};
-	}
+  /** 放弃目标 */
+  protected discardTargets({actor, selector, distance}: {
+    actor: ActorGetter
+    selector: ActorSelector
+    distance: number
+  }): CommandFunction {
+    const getActor = Command.compileActor(actor)
+    const getDistance = Command.compileNumber(distance)
+    return () => {
+      getActor()?.target.discard(selector, getDistance())
+      return true
+    }
+  }
 
 	/** 重置目标列表 */
 	protected resetTargets({ actor }: { actor: ActorGetter }): CommandFunction {
@@ -8333,32 +8318,25 @@ let Command = new class CommandCompiler {
 		}
 	}
 
-	/** 设置缩放率 */
-	protected setZoomFactor({
-		zoom,
-		easingId,
-		duration,
-		wait,
-	}: {
-		zoom: number | VariableGetter;
-		easingId: string;
-		duration: number;
-		wait: boolean;
-	}): CommandFunction {
-		const getZoom = Command.compileNumber(zoom, 1, 1, 8);
-		const getDuration = Command.compileNumber(duration);
-		return () => {
-			if (Scene.binding !== null) {
-				const zoom = getZoom();
-				const duration = getDuration();
-				Camera.setZoomFactor(zoom, easingId, duration);
-				if (wait && duration > 0) {
-					return CurrentEvent.wait(duration);
-				}
-			}
-			return true;
-		};
-	}
+  /** 设置缩放率 */
+  protected setZoomFactor({zoom, easingId, duration, wait}: {
+    zoom: number | VariableGetter
+    easingId: string
+    duration: number
+    wait: boolean
+  }): CommandFunction {
+    const getZoom = Command.compileNumber(zoom, 1, 1, 8)
+    const getDuration = Command.compileNumber(duration)
+    return () => {
+      const zoom = getZoom()
+      const duration = getDuration()
+      Camera.setZoomFactor(zoom, easingId, duration)
+      if (wait && duration > 0) {
+        return CurrentEvent.wait(duration)
+      }
+      return true
+    }
+  }
 
 	/** 设置环境光 */
 	protected setAmbientLight({
