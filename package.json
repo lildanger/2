@@ -10,7 +10,7 @@
 		"buildres": "./bin/buildres.js"
 	},
 	"scripts": {
-		"buildres": "buildres",
+		"buildres": "node bin/buildres.js",
 		"prepare": "husky",
 		"start": "electron . --dirname=Project",
 		"setup": "pnpm install",

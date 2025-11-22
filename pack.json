@@ -2,26 +2,26 @@
   {
     "path": "arpg-ts-chinese",
     "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\arpg-ts-chinese",
-    "version": "1.0.10",
-    "md5": "16b6ebbe865e51af115560bbe5feebc3",
-    "sha1": "de71f79a423020fe26145c7b16ded07ff5f5fe5d",
-    "sha256": "e41d753825e1726c7d194dfc5526442d19ef0ea8e291e50f87663e2285efe02f"
+    "version": "1.0.11",
+    "md5": "182a56d88b8670880579cd07d03ff0de",
+    "sha1": "40a4d802e814deb5c7423e77387332bd900ee289",
+    "sha256": "e72b3c73490872ee077b30b9a7f3cf85611538a2d9154315ab0ce414208645fc"
   },
   {
     "path": "arpg-ts-english",
     "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\arpg-ts-english",
-    "version": "1.0.10",
-    "md5": "f00c7605a8a7d3c1f6e939ac000b6fa3",
-    "sha1": "fa3fcb2fe4dd609e0a0e0ac3d9d33ee9ea70bb51",
-    "sha256": "f1723d9f410ab140f7f06423c3075371d4119abd7d1aaf160bef59b676a4b2e8"
+    "version": "1.0.11",
+    "md5": "411f0783cce48db10f5e62190afc77e4",
+    "sha1": "c7453463c433fb39393ffc4cde6578906024d018",
+    "sha256": "8a84bf36f43c85fbcd9ba3c33ac65e733c8588e9746bcbf64b931db90def1d17"
   },
   {
     "path": "arpg-ts-update",
     "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\arpg-ts-update",
-    "version": "1.0.6",
-    "md5": "df64888d9220621e0b7e9d689ae1b2a0",
-    "sha1": "a426f02f949c5e9877f4095d538e9303eb1ca28d",
-    "sha256": "74814524c26ceb31ae2f2a65327ea4428fbfa23faf1478623c1f6b5305fbabc0"
+    "version": "1.0.7",
+    "md5": "f95aea635ac2f643afbd394869b6c0f0",
+    "sha1": "f5d18be0def07aad97f1e8368855c2ac1e3b1d16",
+    "sha256": "7a70956482051fe60ba48fe0c0fec016b1f8a6f9eec4947893c5283ab82ccb86"
   },
   {
     "path": "electron-mac-universal.app",

@@ -2,7 +2,7 @@
 const fs = require('fs-extra')
 const yauzl = require('yauzl')
 
-const CommunityVersion = '25111001' // 社区编辑器版本
+const CommunityVersion = '25112201' // 社区编辑器版本
 
 EventBus.once('editor_loaded', () => {
 	// 更新项目数据
