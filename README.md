@@ -59,6 +59,13 @@ pnpm run build:linux
 
 ```
 
+## 自行更新资源
+
+1. 在 https://github.com/Open-Yami-Community/yami-rpg-editor/releases/tag/win 中将需要更新的资源包下载下来
+2. 将其解压并替换到`C:\Users\<用户名>\.openyami\Templates`中
+3. 将`C:\Users\<用户名>\.openyami\Templates\template.json`文件替换为本仓库的`./Project/Script/module/packmeta.json`文件
+4. 重启编辑器即可
+
 ## 贡献者
 
 ![GitHub contributors](https://img.shields.io/github/contributors/Open-Yami-Community/yami-rpg-editor)
