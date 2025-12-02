@@ -177,7 +177,7 @@ Browser.createScript = function (filename) {
 	const dirname = body.getDirName()
 	const path = `${dirname}/${fullname}`
 	const route = File.route(path)
-	const source = Path.resolve(__dirname, 'Templates/script/', filename)
+	const source = Path.resolve(TemplatesPath, 'script', filename)
 	FSP.copyFile(source, route)
 		.then(() => {
 			return Directory.update()
