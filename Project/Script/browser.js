@@ -6,6 +6,8 @@ const Browser = $('#project-browser')
 // properties
 Browser.page = $('#project')
 Browser.searcher = null
+// 会话内搜索历史（不持久化，最多 9 条）
+Browser.searchHistories = []
 // methods
 Browser.initialize = null
 Browser.unselect = null
@@ -37,6 +39,47 @@ Browser.initialize = function () {
 	this.body.on('select', this.bodySelect)
 	this.body.on('unselect', this.bodyUnselect)
 	this.body.on('popup', this.bodyPopup)
+
+	// 搜索历史（会话内）：focus 显示历史，blur 保存当前关键词
+	if (!this.searcher) {
+		console.warn('Browser.initialize: searcher not found')
+	} else {
+		console.log('Browser.initialize: searcher bound', this.searcher)
+		// 尝试找到内部真正的 input 元素（自定义 text-box 包裹）
+		let searchInput = null
+		try {
+			searchInput = this.searcher.querySelector('.text-box-input') || this.searcher.querySelector('input')
+		} catch (e) {
+			searchInput = null
+		}
+		if (searchInput) {
+			this.searcherInput = searchInput
+			console.log('Browser.initialize: bound to inner input', searchInput)
+			if (typeof searchInput.on === 'function') {
+				searchInput.on('focus', this.searcherFocus)
+				searchInput.on('blur', this.searcherBlur)
+			} else if (typeof searchInput.addEventListener === 'function') {
+				searchInput.addEventListener('focus', this.searcherFocus)
+				searchInput.addEventListener('blur', this.searcherBlur)
+			} else {
+				console.warn('Browser.initialize: unable to bind focus/blur to inner input')
+			}
+		} else {
+			// 退回绑定到自定义元素本身
+			if (typeof this.searcher.on === 'function') {
+				this.searcher.on('focus', this.searcherFocus)
+				this.searcher.on('blur', this.searcherBlur)
+			} else if (typeof this.searcher.addEventListener === 'function') {
+				this.searcher.addEventListener('focus', this.searcherFocus)
+				this.searcher.addEventListener('blur', this.searcherBlur)
+			} else {
+				console.warn('Browser.initialize: unable to bind focus/blur to searcher')
+			}
+		}
+	}
+	
+	// 初始化全局主题监听器
+	this._initThemeObserver()
 }
 
 // 取消选择元数据匹配的项目
@@ -134,7 +177,7 @@ Browser.createScript = function (filename) {
 	const dirname = body.getDirName()
 	const path = `${dirname}/${fullname}`
 	const route = File.route(path)
-	const source = Path.resolve(TemplatesPath, 'script', filename)
+	const source = Path.resolve(__dirname, 'Templates/script/', filename)
 	FSP.copyFile(source, route)
 		.then(() => {
 			return Directory.update()
@@ -330,6 +373,212 @@ Browser.bodyUnselect = function (event) {
 		if (files.length === 1 && files[0].path === meta.path) {
 			Inspector.close()
 		}
+	}
+}
+
+// 将搜索词加入会话历史（去重、最近优先、最多保留9条）
+Browser.addSearchHistory = function (keyword) {
+	if (!keyword) return
+	const k = keyword.trim()
+	if (!k) return
+	const h = this.searchHistories
+	const idx = h.indexOf(k)
+	if (idx !== -1) h.splice(idx, 1)
+	h.unshift(k)
+	if (h.length > 9) h.length = 9
+}
+
+// 搜索框获得焦点：以下拉菜单显示历史
+Browser.searcherFocus = function (event) {
+	try {
+		// 初始化主题监听器
+		Browser._initThemeObserver()
+		// 使用自定义 DOM 下拉以避免系统菜单夺取焦点
+		Browser._showSearchHistoryDropdown(this)
+	} catch (e) {
+		console.error('Browser.searcherFocus error', e)
+	}
+}
+
+// 搜索框失去焦点：保存当前搜索词到会话历史
+Browser.searcherBlur = function (event) {
+	try {
+		const val = this.value
+		if (val && val.trim()) {
+			Browser.addSearchHistory(val)
+			console.log('Browser.searcherBlur: added history', val)
+		}
+		// 延迟隐藏下拉，允许点击下拉项时处理点击事件
+		setTimeout(() => {
+			Browser._hideSearchHistoryDropdown()
+		}, 150)
+	} catch (e) {
+		console.error('Browser.searcherBlur error', e)
+	}
+}
+
+// 获取主题相关的样式
+Browser._getThemeStyles = function () {
+	const isDarkTheme = document.documentElement.classList.contains('dark')
+	return {
+		dropdown: {
+			background: isDarkTheme ? '#383838' : '#f0f0f0',
+			border: isDarkTheme ? '1px solid #181818' : '1px solid #c0c0c0',
+			boxShadow: isDarkTheme ? '0 6px 18px rgba(0, 0, 0, 0.5)' : '0 6px 18px rgba(0, 0, 0, 0.15)',
+			color: isDarkTheme ? '#d8d8d8' : '#000000',
+		},
+		item: {
+			color: isDarkTheme ? '#d8d8d8' : '#000000',
+			hoverBg: isDarkTheme ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+		}
+	}
+}
+
+// 初始化主题监听器
+Browser._initThemeObserver = function () {
+	if (this._themeObserver) return
+	this._themeObserver = new MutationObserver(() => {
+		if (this._searchDropdown) {
+			const newThemeStyles = this._getThemeStyles()
+			Object.assign(this._searchDropdown.style, {
+				background: newThemeStyles.dropdown.background,
+				border: newThemeStyles.dropdown.border,
+				boxShadow: newThemeStyles.dropdown.boxShadow,
+				color: newThemeStyles.dropdown.color,
+			})
+			// 更新下拉菜单项的样式
+			const items = this._searchDropdown.querySelectorAll('.browser-search-item')
+			items.forEach(item => {
+				item.style.color = newThemeStyles.item.color
+				item.style.background = ''
+			})
+		}
+	})
+	this._themeObserver.observe(document.documentElement, {
+		attributes: true,
+		attributeFilter: ['class']
+	})
+}
+
+// --- 自定义下拉实现（会话内） ---
+Browser._createSearchDropdown = function () {
+	if (this._searchDropdown) return
+	const el = document.createElement('div')
+	el.className = 'browser-search-history-dropdown'
+	// 检查是否为黑暗主题
+	const themeStyles = this._getThemeStyles()
+	const styles = {
+		position: 'absolute',
+		zIndex: 9999,
+		// 根据主题动态设置颜色
+		background: themeStyles.dropdown.background,
+		border: themeStyles.dropdown.border,
+		boxShadow: themeStyles.dropdown.boxShadow,
+		padding: '2px 0',
+		maxHeight: '300px',
+		maxWidth: '300px',
+		overflowY: 'auto',
+		overflowX: 'hidden',
+		display: 'none',
+		fontSize: '12px',
+		color: themeStyles.dropdown.color,
+		scrollbarWidth: 'none', // Firefox
+	}
+Object.assign(el.style, styles)
+	
+	// 初始化全局主题监听器
+	this._initThemeObserver()
+	
+// 隐藏滚动条（Webkit）
+el.style.setProperty('scrollbar-width', 'none') // Firefox
+el.style.setProperty('msOverflowStyle', 'none') // IE/Edge
+el.style.setProperty('overflow', 'auto')
+el.style.setProperty('overflow-x', 'hidden')
+el.style.setProperty('max-width', '300px')
+el.style.setProperty('max-height', '300px')
+// 伪元素隐藏滚动条（Webkit）
+el.appendChild(document.createElement('style')).textContent = `
+	.browser-search-history-dropdown::-webkit-scrollbar { display: none; width: 0; height: 0; }
+`;
+	// 阻止下拉上的 mousedown 导致输入框失去焦点
+	el.addEventListener('mousedown', (e) => {
+		e.preventDefault()
+	})
+	document.body.appendChild(el)
+	this._searchDropdown = el
+}
+
+Browser._showSearchHistoryDropdown = function (inputEl) {
+	try {
+		this._createSearchDropdown()
+		const el = this._searchDropdown
+		const histories = this.searchHistories
+		if (!histories || histories.length === 0) {
+			el.style.display = 'none'
+			return
+		}
+		// 清空并填充
+		el.innerHTML = ''
+		for (const kw of histories) {
+			const item = document.createElement('div')
+			item.className = 'browser-search-item'
+			item.textContent = kw
+			const themeStyles = this._getThemeStyles()
+			Object.assign(item.style, {
+				padding: '2px 8px',
+				lineHeight: '17px',
+				cursor: 'pointer',
+				whiteSpace: 'nowrap',
+				color: themeStyles.item.color,
+				transition: 'background 0.2s ease'
+			})
+			item.addEventListener('click', (ev) => {
+				inputEl.value = kw
+				inputEl.dispatchEvent(new Event('input', { bubbles: true }))
+				// 将焦点返回到输入框，随后隐藏下拉
+				inputEl.focus()
+				this._hideSearchHistoryDropdown()
+			})
+			item.addEventListener('mouseover', () => {
+				const currentThemeStyles = this._getThemeStyles()
+				item.style.background = currentThemeStyles.item.hoverBg
+			})
+			item.addEventListener('mouseout', () => {
+				item.style.background = ''
+			})
+			el.appendChild(item)
+		}
+		// 定位
+		const r = inputEl.getBoundingClientRect()
+		el.style.minWidth = `${Math.max(r.width, 160)}px`
+		el.style.left = `${r.left + window.scrollX}px`
+		el.style.top = `${r.bottom + window.scrollY}px`
+		el.style.display = 'block'
+		// 监听外部点击以隐藏
+		setTimeout(() => {
+			this._outsideHandler = (ev) => {
+				if (!el.contains(ev.target) && ev.target !== inputEl) {
+					this._hideSearchHistoryDropdown()
+				}
+			}
+			document.addEventListener('mousedown', this._outsideHandler)
+		}, 0)
+	} catch (e) {
+		console.error('Browser._showSearchHistoryDropdown error', e)
+	}
+}
+
+Browser._hideSearchHistoryDropdown = function () {
+	try {
+		const el = this._searchDropdown
+		if (!el) return
+		el.style.display = 'none'
+		if (this._outsideHandler) {
+			document.removeEventListener('mousedown', this._outsideHandler)
+			this._outsideHandler = null
+		}
+	} catch (e) {
+		console.error('Browser._hideSearchHistoryDropdown error', e)
 	}
 }
 
